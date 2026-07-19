@@ -3,12 +3,12 @@ import Link from "next/link";
 import HeroSection from "@/components/home/HeroSection";
 import TabBar from "@/components/home/TabBar";
 import PostCard from "@/components/ui/PostCard";
-import { MOCK_POSTS } from "@/lib/mock-posts";
+import { getPosts } from "@/lib/posts";
 import { getAndIncrementVisitorCount, getVisitorHistory } from "@/lib/stats";
 
 export default async function HomePage() {
   const [posts, visitorCount, visitorHistory] = await Promise.all([
-    Promise.resolve(MOCK_POSTS),
+    getPosts(),
     getAndIncrementVisitorCount(),
     getVisitorHistory(7),
   ]);

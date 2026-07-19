@@ -1,8 +1,13 @@
 import Image from "next/image";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import type { ComponentPropsWithoutRef } from "react";
+import type { Components, ExtraProps } from "react-markdown";
 
-function MarkdownImage(props: ComponentPropsWithoutRef<"img">) {
+type MarkdownImageProps = ComponentPropsWithoutRef<"img"> & ExtraProps;
+
+function MarkdownImage(props: MarkdownImageProps) {
   const src = typeof props.src === "string" ? props.src : "";
   const alt = props.alt ?? "";
 
@@ -22,7 +27,7 @@ function MarkdownImage(props: ComponentPropsWithoutRef<"img">) {
   );
 }
 
-const components = {
+const components: Components = {
   img: MarkdownImage,
 };
 
@@ -30,10 +35,17 @@ interface MarkdownContentProps {
   source: string;
 }
 
-export default async function MarkdownContent({ source }: MarkdownContentProps) {
+export default async function MarkdownContent({
+  source,
+}: MarkdownContentProps) {
   return (
     <div className="prose-blog">
-      <MDXRemote source={source} components={components} />
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={components}>
+        {source}
+      </ReactMarkdown>
     </div>
   );
 }
