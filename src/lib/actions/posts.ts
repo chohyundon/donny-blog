@@ -26,7 +26,9 @@ function estimateReadTime(content: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-export async function createPost(formData: FormData): Promise<CreatePostResult> {
+export async function createPost(
+  formData: FormData,
+): Promise<CreatePostResult> {
   const user = await requireAuthor();
   if (!user) {
     return { ok: false, error: "작성자만 글을 쓸 수 있습니다." };

@@ -1,65 +1,65 @@
-import { createClient } from '@/lib/supabase/server'
-import { getE2EPostBySlug, isE2EMockDbEnabled } from '@/lib/e2e/mock-store'
-import type { Post } from '@/types'
+import { createClient } from "@/lib/supabase/server";
+import { getE2EPostBySlug, isE2EMockDbEnabled } from "@/lib/e2e/mock-store";
+import type { Post } from "@/types";
 
 export async function getPosts(tag?: string): Promise<Post[]> {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   let query = supabase
-    .from('posts')
-    .select('*')
-    .eq('published', true)
-    .order('published_at', { ascending: false })
+    .from("posts")
+    .select("*")
+    .eq("published", true)
+    .order("published_at", { ascending: false });
 
-  if (tag && tag !== '트렌딩' && tag !== '최신') {
-    query = query.eq('tag', tag)
+  if (tag && tag !== "트렌딩" && tag !== "최신") {
+    query = query.eq("tag", tag);
   }
 
-  const { data, error } = await query
+  const { data, error } = await query;
 
   if (error) {
-    console.error('Failed to fetch posts:', error)
-    return []
+    console.error("Failed to fetch posts:", error);
+    return [];
   }
 
-  return data ?? []
+  return data ?? [];
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   if (isE2EMockDbEnabled()) {
-    const e2ePost = await getE2EPostBySlug(slug)
-    if (e2ePost) return e2ePost
+    const e2ePost = await getE2EPostBySlug(slug);
+    if (e2ePost) return e2ePost;
   }
 
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('published', true)
-    .single()
+    .from("posts")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
 
-  if (error) return null
-  return data
+  if (error) return null;
+  return data;
 }
 
 export async function getTrendingPosts(): Promise<Post[]> {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('published', true)
-    .order('likes', { ascending: false })
-    .limit(6)
+    .from("posts")
+    .select("*")
+    .eq("published", true)
+    .order("likes", { ascending: false })
+    .limit(6);
 
-  if (error) return []
-  return data ?? []
+  if (error) return [];
+  return data ?? [];
 }
 
 export async function likePost(postId: string): Promise<void> {
-  const supabase = createClient()
+  const supabase = createClient();
   // Use rpc to atomically increment
-  await (await supabase).rpc('increment_likes', { post_id: postId })
+  await (await supabase).rpc("increment_likes", { post_id: postId });
 }

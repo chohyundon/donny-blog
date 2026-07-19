@@ -18,7 +18,14 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-const TAGS = ["React", "TypeScript", "Next.js", "CSS", "성능최적화", "개발일지"];
+const TAGS = [
+  "React",
+  "TypeScript",
+  "Next.js",
+  "CSS",
+  "성능최적화",
+  "개발일지",
+];
 
 const COLORS = [
   { color: "#1DC4D0", accent: "#0D9AA8" },
@@ -71,7 +78,10 @@ export default function WriteForm({ initialError }: WriteFormProps) {
   const insertAtCursor = (snippet: string) => {
     const el = textareaRef.current;
     if (!el) {
-      setContent((prev) => `${prev}${prev.endsWith("\n") || !prev ? "" : "\n"}${snippet}`);
+      setContent(
+        (prev) =>
+          `${prev}${prev.endsWith("\n") || !prev ? "" : "\n"}${snippet}`,
+      );
       return;
     }
 
@@ -198,8 +208,7 @@ export default function WriteForm({ initialError }: WriteFormProps) {
               size="sm"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading || isPending}
-              className="border-white/10 bg-white/4 text-xs text-white/60 hover:bg-white/8 hover:text-white"
-            >
+              className="border-white/10 bg-white/4 text-xs text-white/60 hover:bg-white/8 hover:text-white">
               {isUploading ? (
                 <LoaderCircle size={13} className="animate-spin" />
               ) : (
@@ -217,19 +226,23 @@ export default function WriteForm({ initialError }: WriteFormProps) {
           onChange={(e) => setContent(e.target.value)}
           required
           rows={16}
-          placeholder={"마크다운으로 작성하세요.\n중간중간 [이미지 넣기]로 사진을 삽입할 수 있습니다."}
+          placeholder={
+            "마크다운으로 작성하세요.\n중간중간 [이미지 넣기]로 사진을 삽입할 수 있습니다."
+          }
           className="resize-y rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm leading-relaxed text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0"
         />
         <p className="mt-2 text-xs text-white/28">
-          커서 위치에 <code className="text-white/45">![설명](url)</code> 형식으로
-          들어갑니다. jpg/png/webp/gif, 최대 5MB.
+          커서 위치에 <code className="text-white/45">![설명](url)</code>
+          형식으로 들어갑니다. jpg/png/webp/gif, 최대 5MB.
         </p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <Label className="mb-2 text-sm font-normal text-white/45">태그</Label>
-          <Select value={tag} onValueChange={(value) => setTag(value as string)}>
+          <Select
+            value={tag}
+            onValueChange={(value) => setTag(value as string)}>
             <SelectTrigger className="h-auto w-full rounded-xl border-white/10 bg-[#16161f] px-4 py-3 text-sm text-white focus-visible:border-white/20 focus-visible:ring-0">
               <SelectValue />
             </SelectTrigger>
@@ -244,7 +257,9 @@ export default function WriteForm({ initialError }: WriteFormProps) {
         </div>
 
         <div>
-          <Label className="mb-2 text-sm font-normal text-white/45">썸네일 색</Label>
+          <Label className="mb-2 text-sm font-normal text-white/45">
+            썸네일 색
+          </Label>
           <div className="flex flex-wrap gap-2">
             {COLORS.map((item, index) => (
               <button
@@ -280,8 +295,7 @@ export default function WriteForm({ initialError }: WriteFormProps) {
           type="submit"
           size="lg"
           disabled={isPending || isUploading}
-          className="rounded-xl px-5 py-3 text-sm"
-        >
+          className="rounded-xl px-5 py-3 text-sm">
           {isPending ? "저장 중..." : "글 발행"}
         </Button>
         <Button
@@ -289,8 +303,7 @@ export default function WriteForm({ initialError }: WriteFormProps) {
           variant="outline"
           size="lg"
           onClick={() => router.back()}
-          className="rounded-xl border-white/10 px-5 py-3 text-sm text-white/50 hover:bg-white/5 hover:text-white"
-        >
+          className="rounded-xl border-white/10 px-5 py-3 text-sm text-white/50 hover:bg-white/5 hover:text-white">
           취소
         </Button>
       </div>
