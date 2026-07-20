@@ -46,4 +46,31 @@ test.describe("글쓰기 / 저장", () => {
     ).toBeVisible();
     await expect(page.getByText(body)).toBeVisible();
   });
+
+  test("본문 입력 시 프리뷰가 실시간으로 렌더링된다", async ({
+    page,
+    context,
+  }) => {
+    await context.addCookies([
+      {
+        name: "e2e-author",
+        value: "1",
+        url: "http://localhost:3100",
+      },
+    ]);
+
+    await page.goto("/write");
+    await expect(page.getByRole("heading", { name: "글쓰기" })).toBeVisible();
+
+    await page
+      .locator('textarea[name="content"]')
+      .fill("## 프리뷰 테스트 제목\n\n**굵게 표시되는 문장**");
+
+    await expect(
+      page.getByRole("heading", { level: 2, name: "프리뷰 테스트 제목" }),
+    ).toBeVisible();
+    await expect(
+      page.locator("strong", { hasText: "굵게 표시되는 문장" }),
+    ).toBeVisible();
+  });
 });

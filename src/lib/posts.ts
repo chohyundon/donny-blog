@@ -44,6 +44,25 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   return data;
 }
 
+export async function getPostBySlugForAuthor(
+  slug: string,
+): Promise<Post | null> {
+  if (isE2EMockDbEnabled()) {
+    return getE2EPostBySlug(slug);
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error) return null;
+  return data;
+}
+
 export async function getTrendingPosts(): Promise<Post[]> {
   const supabase = await createClient();
 
