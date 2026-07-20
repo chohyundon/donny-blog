@@ -177,6 +177,3 @@ create policy "Author can delete post images"
     bucket_id = 'post-images'
     and (auth.jwt() ->> 'email') = 'gse06044@naver.com'
   );
-
--- 카드 썸네일 이미지
-alter table public.posts add column if not exists thumbnail_url text;

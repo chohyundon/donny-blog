@@ -34,8 +34,3 @@ export async function getE2EPostBySlug(slug: string): Promise<Post | null> {
   const posts = await readStore();
   return posts.find((item) => item.slug === slug) ?? null;
 }
-
-export async function deleteE2EPost(slug: string) {
-  const posts = await readStore();
-  await writeStore(posts.filter((item) => item.slug !== slug));
-}

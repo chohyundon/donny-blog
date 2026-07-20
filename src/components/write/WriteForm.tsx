@@ -2,12 +2,9 @@
 
 import { useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { ImagePlus, LoaderCircle, X } from "lucide-react";
-import { createPost, updatePost } from "@/lib/actions/posts";
+import { ImagePlus, LoaderCircle } from "lucide-react";
+import { createPost } from "@/lib/actions/posts";
 import { uploadPostImage } from "@/lib/actions/upload";
-import MarkdownPreview from "@/components/write/MarkdownPreview";
-import type { Post } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -52,36 +49,24 @@ function toSlug(value: string) {
 
 interface WriteFormProps {
   initialError?: string;
-  initialPost?: Post;
 }
 
-export default function WriteForm({ initialError, initialPost }: WriteFormProps) {
+export default function WriteForm({ initialError }: WriteFormProps) {
   const router = useRouter();
-  const isEditMode = !!initialPost;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const coverInputRef = useRef<HTMLInputElement>(null);
 
-  const [title, setTitle] = useState(initialPost?.title ?? "");
-  const [slug, setSlug] = useState(initialPost?.slug ?? "");
-  const [slugTouched, setSlugTouched] = useState(isEditMode);
-  const [excerpt, setExcerpt] = useState(initialPost?.excerpt ?? "");
-  const [content, setContent] = useState(initialPost?.content ?? "");
-  const [tag, setTag] = useState(initialPost?.tag ?? TAGS[0]);
-  const [colorIndex, setColorIndex] = useState(() => {
-    const index = COLORS.findIndex(
-      (item) => item.color === initialPost?.thumbnail_color,
-    );
-    return index === -1 ? 0 : index;
-  });
-  const [published, setPublished] = useState(initialPost?.published ?? true);
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [slugTouched, setSlugTouched] = useState(false);
+  const [excerpt, setExcerpt] = useState("");
+  const [content, setContent] = useState("");
+  const [tag, setTag] = useState(TAGS[0]);
+  const [colorIndex, setColorIndex] = useState(0);
+  const [published, setPublished] = useState(true);
   const [error, setError] = useState(initialError ?? null);
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
-  const [coverImageUrl, setCoverImageUrl] = useState<string | null>(
-    initialPost?.thumbnail_url ?? null,
-  );
-  const [isCoverUploading, setIsCoverUploading] = useState(false);
 
   const selectedColor = COLORS[colorIndex];
 
@@ -142,27 +127,6 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
     }
   };
 
-  const handleCoverUpload = async (file: File) => {
-    setError(null);
-    setIsCoverUploading(true);
-
-    try {
-      const formData = new FormData();
-      formData.set("file", file);
-      const result = await uploadPostImage(formData);
-
-      if (!result.ok) {
-        setError(result.error);
-        return;
-      }
-
-      setCoverImageUrl(result.url);
-    } finally {
-      setIsCoverUploading(false);
-      if (coverInputRef.current) coverInputRef.current.value = "";
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
@@ -172,12 +136,9 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
     formData.set("tag", tag);
     formData.set("thumbnail_color", selectedColor.color);
     formData.set("thumbnail_accent", selectedColor.accent);
-    formData.set("thumbnail_url", coverImageUrl ?? "");
 
     startTransition(async () => {
-      const result = isEditMode
-        ? await updatePost(initialPost.slug, formData)
-        : await createPost(formData);
+      const result = await createPost(formData);
       if (!result.ok) {
         setError(result.error);
         return;
@@ -210,15 +171,9 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
             setSlugTouched(true);
             setSlug(toSlug(e.target.value));
           }}
-          readOnly={isEditMode}
           placeholder="my-post-slug"
-          className="h-auto rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0 read-only:opacity-50"
+          className="h-auto rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0"
         />
-        {isEditMode && (
-          <p className="mt-2 text-xs text-white/28">
-            슬러그는 링크가 깨지지 않도록 수정할 수 없어요.
-          </p>
-        )}
       </div>
 
       <div>
@@ -264,78 +219,21 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
           </div>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Textarea
-            ref={textareaRef}
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            rows={16}
-            placeholder={
-              "마크다운으로 작성하세요.\n중간중간 [이미지 넣기]로 사진을 삽입할 수 있습니다."
-            }
-            className="resize-y rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm leading-relaxed text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0 lg:h-auto"
-          />
-          <div className="hidden lg:block">
-            <MarkdownPreview content={content} />
-          </div>
-        </div>
+        <Textarea
+          ref={textareaRef}
+          name="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          required
+          rows={16}
+          placeholder={
+            "마크다운으로 작성하세요.\n중간중간 [이미지 넣기]로 사진을 삽입할 수 있습니다."
+          }
+          className="resize-y rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm leading-relaxed text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0"
+        />
         <p className="mt-2 text-xs text-white/28">
           커서 위치에 <code className="text-white/45">![설명](url)</code>
           형식으로 들어갑니다. jpg/png/webp/gif, 최대 5MB.
-        </p>
-      </div>
-
-      <div>
-        <Label className="mb-2 text-sm font-normal text-white/45">
-          커버 이미지
-        </Label>
-        <input
-          ref={coverInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
-          className="hidden"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) void handleCoverUpload(file);
-          }}
-        />
-        {coverImageUrl ? (
-          <div className="relative h-40 w-full max-w-xs overflow-hidden rounded-xl border border-white/10">
-            <Image
-              src={coverImageUrl}
-              alt="커버 이미지 미리보기"
-              fill
-              sizes="320px"
-              className="object-cover"
-            />
-            <button
-              type="button"
-              onClick={() => setCoverImageUrl(null)}
-              className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70"
-              aria-label="커버 이미지 제거">
-              <X size={14} />
-            </button>
-          </div>
-        ) : (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => coverInputRef.current?.click()}
-            disabled={isCoverUploading || isPending}
-            className="border-white/10 bg-white/4 text-xs text-white/60 hover:bg-white/8 hover:text-white">
-            {isCoverUploading ? (
-              <LoaderCircle size={13} className="animate-spin" />
-            ) : (
-              <ImagePlus size={13} />
-            )}
-            {isCoverUploading ? "업로드 중..." : "이미지 선택"}
-          </Button>
-        )}
-        <p className="mt-2 text-xs text-white/28">
-          선택하지 않으면 아래 썸네일 색으로 카드가 표시됩니다.
         </p>
       </div>
 
@@ -398,7 +296,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
           size="lg"
           disabled={isPending || isUploading}
           className="rounded-xl px-5 py-3 text-sm">
-          {isPending ? "저장 중..." : isEditMode ? "수정 저장" : "글 발행"}
+          {isPending ? "저장 중..." : "글 발행"}
         </Button>
         <Button
           type="button"
