@@ -10,8 +10,8 @@ import PostActions from "@/components/blog/PostActions";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { requireAuthor } from "@/lib/auth/author";
-import { getCommentsBySlug, getCurrentUser } from "@/lib/comments";
+import { getAuthContext } from "@/lib/auth/author";
+import { getCommentsBySlug, mapUserToCommentAuthor } from "@/lib/comments";
 import { getPostBySlug } from "@/lib/posts";
 
 interface PostPageProps {
@@ -23,7 +23,15 @@ export async function generateMetadata({ params }: PostPageProps) {
   const slug = decodeURIComponent(rawSlug);
   const post = await getPostBySlug(slug);
   if (!post) return {};
-  return { title: `${post.title} — donny.log`, description: post.excerpt };
+  return {
+    title: `${post.title} — donny.log`,
+    description: post.excerpt,
+    openGraph: {
+      title: `${post.title} — donny.log`,
+      description: post.excerpt,
+      images: post.thumbnail_url ? [post.thumbnail_url] : undefined,
+    },
+  };
 }
 
 export default async function PostPage({ params }: PostPageProps) {
@@ -33,11 +41,11 @@ export default async function PostPage({ params }: PostPageProps) {
 
   if (!post) notFound();
 
-  const [comments, user, author] = await Promise.all([
+  const [comments, { user, author }] = await Promise.all([
     getCommentsBySlug(slug),
-    getCurrentUser(),
-    requireAuthor(),
+    getAuthContext(),
   ]);
+  const commentAuthor = user ? mapUserToCommentAuthor(user) : null;
 
   const timeAgo = formatDistanceToNow(new Date(post.published_at), {
     addSuffix: true,
@@ -152,7 +160,7 @@ export default async function PostPage({ params }: PostPageProps) {
         <CommentSection
           postSlug={slug}
           initialComments={comments}
-          user={user}
+          user={commentAuthor}
         />
       </div>
     </div>
