@@ -67,7 +67,7 @@ export default function PostCard({ post }: PostCardProps) {
                   className="h-6 w-6 rounded-full"
                   style={{ backgroundColor: post.thumbnail_color }}
                 />
-                <span className="text-xs text-white/40">
+                <span className="text-xs text-white/55">
                   donny · {timeAgo}
                 </span>
               </div>
@@ -77,7 +77,7 @@ export default function PostCard({ post }: PostCardProps) {
                   <Heart size={12} />
                   {post.likes}
                 </span>
-                <span className="flex items-center gap-1 text-xs text-white/35">
+                <span className="flex items-center gap-1 text-xs text-white/55">
                   <MessageCircle size={12} />
                   {post.comments_count}
                 </span>

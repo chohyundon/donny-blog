@@ -6,6 +6,11 @@ const WARMUP_ROUTES = [
   "/write",
   "/blog/react-18-concurrent-features",
   "/write/warmup-route",
+  "/about",
+  "/projects",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/feed.xml",
 ];
 
 export default async function globalSetup(config: FullConfig) {

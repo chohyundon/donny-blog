@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { getAuthContext } from "@/lib/auth/author";
 import { getCommentsBySlug, mapUserToCommentAuthor } from "@/lib/comments";
 import { getPostBySlug } from "@/lib/posts";
+import { getSiteUrl } from "@/lib/site";
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -23,11 +24,23 @@ export async function generateMetadata({ params }: PostPageProps) {
   const slug = decodeURIComponent(rawSlug);
   const post = await getPostBySlug(slug);
   if (!post) return {};
+
+  const title = `${post.title} — donny.log`;
+
   return {
-    title: `${post.title} — donny.log`,
+    title,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
     openGraph: {
-      title: `${post.title} — donny.log`,
+      title,
+      description: post.excerpt,
+      type: "article",
+      publishedTime: post.published_at,
+      images: post.thumbnail_url ? [post.thumbnail_url] : undefined,
+    },
+    twitter: {
+      card: post.thumbnail_url ? "summary_large_image" : "summary",
+      title,
       description: post.excerpt,
       images: post.thumbnail_url ? [post.thumbnail_url] : undefined,
     },
@@ -57,8 +70,28 @@ export default async function PostPage({ params }: PostPageProps) {
     post.content.trim().length > 0 &&
     !post.content.trim().endsWith("...");
 
+  const siteUrl = getSiteUrl();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.published_at,
+    dateModified: post.published_at,
+    url: `${siteUrl}/blog/${slug}`,
+    image: post.thumbnail_url ?? undefined,
+    author: {
+      "@type": "Person",
+      name: "donny",
+    },
+  };
+
   return (
     <div className="pt-24 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mx-auto max-w-3xl px-8">
         <div className="mb-10 flex items-center justify-between">
           <Link
@@ -101,7 +134,7 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         </div>
 
-        <div className="mb-6 flex items-center gap-4 text-sm text-white/35">
+        <div className="mb-6 flex items-center gap-4 text-sm text-white/55">
           <div className="flex items-center gap-2">
             <div
               className="h-6 w-6 rounded-full"
@@ -152,7 +185,7 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
           <Link
             href="/blog"
-            className="text-sm text-white/35 transition-colors hover:text-white">
+            className="text-sm text-white/55 transition-colors hover:text-white">
             다른 글 보기 →
           </Link>
         </div>
