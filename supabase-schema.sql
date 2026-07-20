@@ -65,8 +65,14 @@ create table public.site_stats (
 insert into public.site_stats (key, value) values ('visitor_count', 0);
 
 -- 방문자 수 원자적 증가 (총계 갱신 + 일별 로그 동시 처리)
+-- security definer: site_stats/visitor_logs는 RLS상 SELECT만 허용되므로,
+-- anon 역할이 이 함수를 통해서만 원자적으로 값을 바꿀 수 있도록 소유자(postgres) 권한으로 실행
 create or replace function increment_visitor_count()
-returns bigint as $$
+returns bigint
+language plpgsql
+security definer
+set search_path = public
+as $$
 declare
   new_total bigint;
 begin
@@ -82,7 +88,7 @@ begin
 
   return new_total;
 end;
-$$ language plpgsql;
+$$;
 
 -- RLS — 누구나 읽을 수 있고, 함수로만 쓸 수 있음
 alter table public.site_stats enable row level security;
@@ -101,7 +107,11 @@ create policy "Visitor logs are viewable by everyone" on public.visitor_logs
 
 -- 최근 N일 방문자 이력 조회 (빈 날짜는 0으로 채움)
 create or replace function get_visitor_history(days_back int default 7)
-returns table(date date, count bigint) as $$
+returns table(date date, count bigint)
+language sql
+security definer
+set search_path = public
+as $$
   select
     gs.d::date            as date,
     coalesce(vl.count, 0) as count
@@ -112,7 +122,7 @@ returns table(date date, count bigint) as $$
   ) as gs(d)
   left join public.visitor_logs vl on vl.date = gs.d::date
   order by gs.d asc;
-$$ language sql;
+$$;
 
 -- 댓글 (GitHub OAuth 로그인 후 작성)
 create table public.comments (
