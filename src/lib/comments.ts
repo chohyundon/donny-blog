@@ -1,34 +1,24 @@
+import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import type { Comment, CommentAuthor } from "@/types";
 
-export async function getCurrentUser(): Promise<CommentAuthor | null> {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+export function mapUserToCommentAuthor(user: User): CommentAuthor {
+  const meta = user.user_metadata ?? {};
+  const github =
+    (meta.user_name as string | undefined) ??
+    (meta.preferred_username as string | undefined) ??
+    null;
 
-    if (!user) return null;
-
-    const meta = user.user_metadata ?? {};
-    const github =
-      (meta.user_name as string | undefined) ??
-      (meta.preferred_username as string | undefined) ??
-      null;
-
-    return {
-      id: user.id,
-      name:
-        (meta.full_name as string | undefined) ??
-        (meta.name as string | undefined) ??
-        github ??
-        "GitHub User",
-      avatarUrl: (meta.avatar_url as string | undefined) ?? null,
-      github,
-    };
-  } catch {
-    return null;
-  }
+  return {
+    id: user.id,
+    name:
+      (meta.full_name as string | undefined) ??
+      (meta.name as string | undefined) ??
+      github ??
+      "GitHub User",
+    avatarUrl: (meta.avatar_url as string | undefined) ?? null,
+    github,
+  };
 }
 
 export async function getCommentsBySlug(postSlug: string): Promise<Comment[]> {

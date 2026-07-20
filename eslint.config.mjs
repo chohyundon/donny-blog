@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Playwright test artifacts (gitignored, but present locally after test runs)
+    "playwright-report/**",
+    "test-results/**",
   ]),
 ]);
 

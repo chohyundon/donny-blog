@@ -106,6 +106,7 @@ export default function Navbar() {
             <Search size={15} className="shrink-0 text-white/40" />
             <Input
               autoFocus
+              aria-label="포스트 검색"
               placeholder="포스트 검색..."
               className="h-auto flex-1 border-0 bg-transparent p-0 text-sm text-white shadow-none placeholder:text-white/30 focus-visible:ring-0"
             />

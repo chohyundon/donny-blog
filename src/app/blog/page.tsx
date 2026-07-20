@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import PostCard from "@/components/ui/PostCard";
 import { Badge } from "@/components/ui/badge";
 import { getPosts } from "@/lib/posts";
@@ -15,6 +16,29 @@ const TAGS = [
 
 interface BlogPageProps {
   searchParams: Promise<{ tag?: string; tab?: string }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: BlogPageProps): Promise<Metadata> {
+  const { tag } = await searchParams;
+  const activeTag = tag && tag !== "전체" ? tag : undefined;
+
+  const title = activeTag
+    ? `${activeTag} 태그 글 목록 — donny.log`
+    : "블로그 — donny.log";
+  const description = activeTag
+    ? `donny.log에서 ${activeTag} 태그가 붙은 글을 모아봤어요.`
+    : "React, TypeScript, Next.js 그리고 좋은 코드에 대한 이야기";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: activeTag ? `/blog?tag=${activeTag}` : "/blog",
+    },
+    openGraph: { title, description },
+  };
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
@@ -58,7 +82,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             ))}
           </div>
         ) : (
-          <div className="py-20 text-center text-white/30">
+          <div className="py-20 text-center text-white/50">
             아직 포스트가 없어요.
           </div>
         )}

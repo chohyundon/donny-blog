@@ -31,17 +31,30 @@ function e2eAuthorUser(): User {
   } as User;
 }
 
-export async function requireAuthor() {
-  if (process.env.ALLOW_E2E_BYPASS === "true") {
-    const cookieStore = await cookies();
-    if (cookieStore.get("e2e-author")?.value === "1") {
-      return e2eAuthorUser();
-    }
-  }
-
-  const user = await getAuthUser();
+function checkIsAuthor(user: User | null): User | null {
   if (!user || !isAuthorEmail(user.email)) {
     return null;
   }
   return user;
+}
+
+export async function getAuthContext(): Promise<{
+  user: User | null;
+  author: User | null;
+}> {
+  if (process.env.ALLOW_E2E_BYPASS === "true") {
+    const cookieStore = await cookies();
+    if (cookieStore.get("e2e-author")?.value === "1") {
+      const author = e2eAuthorUser();
+      return { user: author, author };
+    }
+  }
+
+  const user = await getAuthUser();
+  return { user, author: checkIsAuthor(user) };
+}
+
+export async function requireAuthor() {
+  const { author } = await getAuthContext();
+  return author;
 }

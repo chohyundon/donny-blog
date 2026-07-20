@@ -33,7 +33,7 @@ export default function Footer() {
             <Link href="/" className="text-lg font-bold text-white">
               donny.log
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-white/40">
+            <p className="mt-3 text-sm leading-relaxed text-white/60">
               React, TypeScript, Next.js 그리고 더 나은 웹을 위한 실전 경험과
               인사이트를 기록합니다.
             </p>
@@ -61,7 +61,7 @@ export default function Footer() {
           {/* Links */}
           <div className="flex gap-16">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/30">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
                 Blog
               </p>
               <ul className="space-y-3">
@@ -77,7 +77,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/30">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
                 More
               </p>
               <ul className="space-y-3">
@@ -98,10 +98,10 @@ export default function Footer() {
         <Separator className="mt-12 bg-white/[0.06]" />
 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
-          <p className="text-xs text-white/25">
+          <p className="text-xs text-white/50">
             © 2025 Donny. All rights reserved.
           </p>
-          <p className="text-xs text-white/25">Built with Next.js & Supabase</p>
+          <p className="text-xs text-white/50">Built with Next.js & Supabase</p>
         </div>
       </div>
     </footer>

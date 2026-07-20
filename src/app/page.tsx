@@ -1,10 +1,15 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
 import TabBar from "@/components/home/TabBar";
 import PostCard from "@/components/ui/PostCard";
 import { getPosts } from "@/lib/posts";
 import { getAndIncrementVisitorCount, getVisitorHistory } from "@/lib/stats";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function HomePage() {
   const [posts, visitorCount, visitorHistory] = await Promise.all([

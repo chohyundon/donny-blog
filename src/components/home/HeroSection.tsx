@@ -19,7 +19,7 @@ export default function HeroSection({
       <div className="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-end lg:gap-14">
         {/* 소개 */}
         <div>
-          <p className="text-sm text-white/40">안녕하세요, Donny입니다.</p>
+          <p className="text-sm text-white/55">안녕하세요, Donny입니다.</p>
 
           <h1 className="mt-4 text-3xl font-semibold leading-snug tracking-tight text-white sm:text-4xl">
             프론트엔드 하면서 겪은 것들을 적어둡니다.
