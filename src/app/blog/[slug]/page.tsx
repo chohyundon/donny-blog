@@ -1,13 +1,16 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Heart, MessageCircle, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import CommentSection from "@/components/comments/CommentSection";
 import MarkdownContent from "@/components/blog/MarkdownContent";
+import PostActions from "@/components/blog/PostActions";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { requireAuthor } from "@/lib/auth/author";
 import { getCommentsBySlug, getCurrentUser } from "@/lib/comments";
 import { getPostBySlug } from "@/lib/posts";
 
@@ -30,9 +33,10 @@ export default async function PostPage({ params }: PostPageProps) {
 
   if (!post) notFound();
 
-  const [comments, user] = await Promise.all([
+  const [comments, user, author] = await Promise.all([
     getCommentsBySlug(slug),
     getCurrentUser(),
+    requireAuthor(),
   ]);
 
   const timeAgo = formatDistanceToNow(new Date(post.published_at), {
@@ -48,24 +52,40 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <div className="pt-24 pb-20">
       <div className="mx-auto max-w-3xl px-8">
-        <Link
-          href="/blog"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "mb-10 h-auto gap-2 p-0 text-sm text-white/40 hover:bg-transparent hover:text-white",
-          )}>
-          <ArrowLeft size={15} />
-          블로그로 돌아가기
-        </Link>
+        <div className="mb-10 flex items-center justify-between">
+          <Link
+            href="/blog"
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "h-auto gap-2 p-0 text-sm text-white/40 hover:bg-transparent hover:text-white",
+            )}>
+            <ArrowLeft size={15} />
+            블로그로 돌아가기
+          </Link>
+          {author && <PostActions slug={slug} />}
+        </div>
 
         <div
           className="relative mb-10 h-56 overflow-hidden rounded-2xl"
           style={{ backgroundColor: post.thumbnail_color }}>
-          <div
-            className="absolute -top-10 right-0 h-64 w-64 rounded-full opacity-40"
-            style={{ backgroundColor: post.thumbnail_accent }}
-          />
-          <div className="absolute bottom-0 -left-8 h-32 w-32 rounded-full bg-white/10" />
+          {post.thumbnail_url ? (
+            <Image
+              src={post.thumbnail_url}
+              alt={post.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 720px"
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <>
+              <div
+                className="absolute -top-10 right-0 h-64 w-64 rounded-full opacity-40"
+                style={{ backgroundColor: post.thumbnail_accent }}
+              />
+              <div className="absolute bottom-0 -left-8 h-32 w-32 rounded-full bg-white/10" />
+            </>
+          )}
           <div className="absolute bottom-5 left-6">
             <Badge className="h-auto rounded-full border-0 bg-black/30 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
               {post.tag}

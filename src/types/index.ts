@@ -6,6 +6,7 @@ export interface Post {
   content: string
   thumbnail_color: string
   thumbnail_accent: string
+  thumbnail_url: string | null
   tag: string
   published_at: string
   likes: number

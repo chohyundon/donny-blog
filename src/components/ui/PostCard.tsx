@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, MessageCircle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -23,12 +24,24 @@ export default function PostCard({ post }: PostCardProps) {
         <div
           className="relative h-44 overflow-hidden"
           style={{ backgroundColor: post.thumbnail_color }}>
-          {/* Decorative circles */}
-          <div
-            className="absolute -top-8 right-0 h-52 w-52 rounded-full opacity-40"
-            style={{ backgroundColor: post.thumbnail_accent }}
-          />
-          <div className="absolute bottom-0 -left-6 h-24 w-24 rounded-full bg-white/10" />
+          {post.thumbnail_url ? (
+            <Image
+              src={post.thumbnail_url}
+              alt={post.title}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            <>
+              {/* Decorative circles */}
+              <div
+                className="absolute -top-8 right-0 h-52 w-52 rounded-full opacity-40"
+                style={{ backgroundColor: post.thumbnail_accent }}
+              />
+              <div className="absolute bottom-0 -left-6 h-24 w-24 rounded-full bg-white/10" />
+            </>
+          )}
 
           {/* Tag badge */}
           <Badge className="absolute bottom-4 left-4 h-auto rounded-full border-0 bg-black/30 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
