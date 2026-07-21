@@ -144,7 +144,9 @@ export default function CommentSection({
             />
 
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs text-white/25">{content.length}/2000</p>
+              <p className="text-xs text-muted-foreground">
+                {content.length}/2000
+              </p>
               <Button
                 type="submit"
                 disabled={isPending || !content.trim()}
@@ -179,7 +181,9 @@ export default function CommentSection({
 
       <ul className="mt-10 space-y-6">
         {initialComments.length === 0 ? (
-          <li className="text-sm text-white/30">아직 댓글이 없습니다.</li>
+          <li className="text-sm text-muted-foreground">
+            아직 댓글이 없습니다.
+          </li>
         ) : (
           initialComments.map((comment) => {
             const timeAgo = formatDistanceToNow(new Date(comment.created_at), {
@@ -208,12 +212,14 @@ export default function CommentSection({
                         href={`https://github.com/${comment.author_github}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs text-white/30 hover:text-white/55"
+                        className="text-xs text-muted-foreground hover:text-white/55"
                       >
                         @{comment.author_github}
                       </a>
                     )}
-                    <span className="text-xs text-white/25">{timeAgo}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {timeAgo}
+                    </span>
                   </div>
                   <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-white/60">
                     {comment.content}
@@ -224,7 +230,7 @@ export default function CommentSection({
                       variant="ghost"
                       onClick={() => handleDelete(comment.id)}
                       disabled={isPending}
-                      className="mt-2 h-auto p-0 text-xs text-white/25 hover:bg-transparent hover:text-destructive"
+                      className="mt-2 h-auto p-0 text-xs text-muted-foreground hover:bg-transparent hover:text-destructive"
                     >
                       삭제
                     </Button>
