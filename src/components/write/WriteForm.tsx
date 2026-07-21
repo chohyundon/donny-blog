@@ -182,8 +182,9 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <Label className="mb-2 text-sm font-normal text-foreground/45">제목</Label>
+        <Label htmlFor="title" className="mb-2 text-sm font-normal text-foreground/45">제목</Label>
         <Input
+          id="title"
           name="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -194,8 +195,9 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
       </div>
 
       <div>
-        <Label className="mb-2 text-sm font-normal text-foreground/45">슬러그</Label>
+        <Label htmlFor="slug" className="mb-2 text-sm font-normal text-foreground/45">슬러그</Label>
         <Input
+          id="slug"
           name="slug"
           value={previewSlug}
           onChange={(e) => {
@@ -214,8 +216,9 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
       </div>
 
       <div>
-        <Label className="mb-2 text-sm font-normal text-foreground/45">요약</Label>
+        <Label htmlFor="excerpt" className="mb-2 text-sm font-normal text-foreground/45">요약</Label>
         <Textarea
+          id="excerpt"
           name="excerpt"
           value={excerpt}
           onChange={(e) => setExcerpt(e.target.value)}
@@ -227,7 +230,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
 
       <div>
         <div className="mb-2 flex items-center justify-between gap-3">
-          <Label className="text-sm font-normal text-foreground/45">본문</Label>
+          <Label htmlFor="content" className="text-sm font-normal text-foreground/45">본문</Label>
           <div className="flex items-center gap-2">
             <input
               ref={fileInputRef}
@@ -259,6 +262,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
         <div className="grid gap-4 lg:grid-cols-2">
           <Textarea
             ref={textareaRef}
+            id="content"
             name="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -280,11 +284,12 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
       </div>
 
       <div>
-        <Label className="mb-2 text-sm font-normal text-foreground/45">
+        <Label htmlFor="cover-image" className="mb-2 text-sm font-normal text-foreground/45">
           커버 이미지
         </Label>
         <input
           ref={coverInputRef}
+          id="cover-image"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/gif"
           className="hidden"
@@ -333,11 +338,11 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <Label className="mb-2 text-sm font-normal text-foreground/45">태그</Label>
+          <Label htmlFor="tag" className="mb-2 text-sm font-normal text-foreground/45">태그</Label>
           <Select
             value={tag}
             onValueChange={(value) => setTag(value as string)}>
-            <SelectTrigger className="h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm text-foreground focus-visible:border-ring focus-visible:ring-0">
+            <SelectTrigger id="tag" className="h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm text-foreground focus-visible:border-ring focus-visible:ring-0">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -351,10 +356,13 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
         </div>
 
         <div>
-          <Label className="mb-2 text-sm font-normal text-foreground/45">
+          <Label id="thumbnail-color-label" className="mb-2 text-sm font-normal text-foreground/45">
             썸네일 색
           </Label>
-          <div className="flex flex-wrap gap-2">
+          <div
+            role="group"
+            aria-labelledby="thumbnail-color-label"
+            className="flex flex-wrap gap-2">
             {COLORS.map((item, index) => (
               <button
                 key={item.color}
