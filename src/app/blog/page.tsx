@@ -1,18 +1,10 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
-import PostCard from "@/components/ui/PostCard";
+import PostGrid from "@/components/ui/PostGrid";
 import { Badge } from "@/components/ui/badge";
-import { getPosts } from "@/lib/posts";
+import { getPosts, getTrendingPosts } from "@/lib/posts";
+import { POST_TAGS } from "@/lib/tags";
 
-const TAGS = [
-  "전체",
-  "React",
-  "TypeScript",
-  "Next.js",
-  "CSS",
-  "성능최적화",
-  "개발일지",
-];
+const TAGS = ["전체", ...POST_TAGS];
 
 interface BlogPageProps {
   searchParams: Promise<{ tag?: string; tab?: string }>;
@@ -45,7 +37,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const { tag, tab } = await searchParams;
   const activeTag = tag ?? "전체";
 
-  const posts = await getPosts(tag && tag !== "전체" ? tag : undefined);
+  const posts =
+    tab === "trending"
+      ? await getTrendingPosts()
+      : await getPosts(tag && tag !== "전체" ? tag : undefined);
 
   return (
     <div className="pt-24 pb-20">
@@ -75,17 +70,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
 
         {/* Grid */}
-        {posts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post, index) => (
-              <PostCard key={post.id} post={post} priority={index < 3} />
-            ))}
-          </div>
-        ) : (
-          <div className="py-20 text-center text-white/50">
-            아직 포스트가 없어요.
-          </div>
-        )}
+        <PostGrid posts={posts} />
       </div>
     </div>
   );

@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Heart, MessageCircle, Clock } from "lucide-react";
+import { ArrowLeft, MessageCircle, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import CommentSection from "@/components/comments/CommentSection";
+import LikeButton from "@/components/blog/LikeButton";
 import MarkdownContent from "@/components/blog/MarkdownContent";
 import PostActions from "@/components/blog/PostActions";
 import { Badge } from "@/components/ui/badge";
@@ -165,14 +166,11 @@ export default async function PostPage({ params }: PostPageProps) {
 
         <div className="mt-16 flex items-center justify-between border-t border-white/8 pt-8">
           <div className="flex items-center gap-4">
-            <button
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "gap-2 rounded-xl border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-sm font-medium text-rose-400 hover:bg-rose-500/20",
-              )}>
-              <Heart size={15} />
-              {post.likes} 좋아요
-            </button>
+            <LikeButton
+              postId={post.id}
+              slug={slug}
+              initialLikes={post.likes}
+            />
             <a
               href="#comments"
               className={cn(
