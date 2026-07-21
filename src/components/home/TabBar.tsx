@@ -29,7 +29,7 @@ export default function TabBar() {
               <TabsTrigger
                 key={tab}
                 value={tab}
-                className="shrink-0 rounded-none border-none px-4 py-4 text-sm font-medium text-white/40 data-active:text-white data-active:after:bg-primary! data-active:after:opacity-100">
+                className="shrink-0 rounded-none border-none px-4 py-4 text-sm font-medium text-white/70 dark:text-white/70 data-active:text-white data-active:after:bg-primary! data-active:after:opacity-100">
                 {tab}
               </TabsTrigger>
             ))}

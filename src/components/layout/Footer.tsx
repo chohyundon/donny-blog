@@ -42,17 +42,22 @@ export default function Footer() {
                 href="https://github.com"
                 target="_blank"
                 rel="noreferrer"
-                className={socialIconClass}>
+                className={socialIconClass}
+                aria-label="GitHub">
                 <GitFork size={16} />
               </a>
               <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noreferrer"
-                className={socialIconClass}>
+                className={socialIconClass}
+                aria-label="X (Twitter)">
                 <X size={16} />
               </a>
-              <Link href="/feed.xml" className={socialIconClass}>
+              <Link
+                href="/feed.xml"
+                className={socialIconClass}
+                aria-label="RSS 피드">
                 <Rss size={16} />
               </Link>
             </div>
