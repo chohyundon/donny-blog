@@ -5,13 +5,14 @@ import { ArrowLeft, Heart, MessageCircle, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import CommentSection from "@/components/comments/CommentSection";
-import MarkdownContent from "@/components/blog/MarkdownContent";
+import TableOfContents from "@/components/blog/TableOfContents";
 import PostActions from "@/components/blog/PostActions";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getAuthContext } from "@/lib/auth/author";
 import { getCommentsBySlug, mapUserToCommentAuthor } from "@/lib/comments";
+import { renderMarkdown } from "@/lib/markdown/render";
 import { getPostBySlug } from "@/lib/posts";
 import { getSiteUrl } from "@/lib/site";
 
@@ -69,6 +70,10 @@ export default async function PostPage({ params }: PostPageProps) {
     !!post.content &&
     post.content.trim().length > 0 &&
     !post.content.trim().endsWith("...");
+
+  const { content: markdownContent, headings } = hasMarkdownBody
+    ? await renderMarkdown(post.content)
+    : { content: null, headings: [] };
 
   const siteUrl = getSiteUrl();
   const jsonLd = {
@@ -154,15 +159,25 @@ export default async function PostPage({ params }: PostPageProps) {
         <h1 className="mb-8 text-4xl font-extrabold leading-tight text-foreground">
           {post.title}
         </h1>
+      </div>
 
-        {hasMarkdownBody ? (
-          <MarkdownContent source={post.content} />
-        ) : (
+      {hasMarkdownBody ? (
+        <div className="mx-auto max-w-3xl px-8 xl:max-w-5xl xl:grid xl:grid-cols-[minmax(0,1fr)_200px] xl:items-start xl:gap-12">
+          <div className="prose-blog max-w-[65ch]">{markdownContent}</div>
+          <TableOfContents
+            headings={headings}
+            className="sticky top-24 hidden xl:block"
+          />
+        </div>
+      ) : (
+        <div className="mx-auto max-w-3xl px-8">
           <article className="prose-blog space-y-6 text-foreground/80">
             <p>{post.excerpt}</p>
           </article>
-        )}
+        </div>
+      )}
 
+      <div className="mx-auto max-w-3xl px-8">
         <div className="mt-16 flex items-center justify-between border-t border-border pt-8">
           <div className="flex items-center gap-4">
             <button

@@ -24,7 +24,7 @@ export default function TabBar() {
           onValueChange={(value) => handleTab(value as string)}>
           <TabsList
             variant="line"
-            className="scrollbar-hide h-auto w-full justify-start gap-1 overflow-x-auto bg-transparent p-0">
+            className="scrollbar-hide h-auto! w-full justify-start gap-1 overflow-x-auto bg-transparent p-0 pb-2">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab}

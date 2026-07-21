@@ -25,9 +25,9 @@ const socialIconClass = cn(
 
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-border bg-background">
-      <div className="mx-auto max-w-7xl px-8 py-16">
-        <div className="flex flex-col justify-between gap-12 md:flex-row">
+    <footer className="mt-16 border-t border-border bg-background">
+      <div className="mx-auto max-w-7xl px-8 py-10">
+        <div className="flex flex-col justify-between gap-8 md:flex-row">
           {/* Brand */}
           <div className="max-w-xs">
             <Link href="/" className="text-lg font-bold text-foreground">
@@ -37,7 +37,7 @@ export default function Footer() {
               React, TypeScript, Next.js 그리고 더 나은 웹을 위한 실전 경험과
               인사이트를 기록합니다.
             </p>
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-4 flex items-center gap-3">
               <a
                 href="https://github.com"
                 target="_blank"
@@ -64,12 +64,12 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex gap-16">
+          <div className="flex gap-10">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground/50">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-foreground/50">
                 Blog
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {LINKS.blog.map((l) => (
                   <li key={l.label}>
                     <Link
@@ -82,10 +82,10 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground/50">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-foreground/50">
                 More
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {LINKS.me.map((l) => (
                   <li key={l.label}>
                     <Link
@@ -100,9 +100,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <Separator className="mt-12 bg-border" />
+        <Separator className="mt-8 bg-border" />
 
-        <div className="flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 pt-6 sm:flex-row">
           <p className="text-xs text-foreground/50">
             © 2025 Donny. All rights reserved.
           </p>
