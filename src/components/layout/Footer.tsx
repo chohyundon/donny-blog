@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { GitFork, X, Rss } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 const LINKS = {
@@ -98,15 +97,6 @@ export default function Footer() {
               </ul>
             </div>
           </div>
-        </div>
-
-        <Separator className="mt-8 bg-border" />
-
-        <div className="flex flex-col items-center justify-between gap-4 pt-6 sm:flex-row">
-          <p className="text-xs text-foreground/50">
-            © 2025 Donny. All rights reserved.
-          </p>
-          <p className="text-xs text-foreground/50">Built with Next.js & Supabase</p>
         </div>
       </div>
     </footer>
