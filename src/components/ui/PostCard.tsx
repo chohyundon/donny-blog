@@ -9,9 +9,10 @@ import type { Post } from "@/types";
 
 interface PostCardProps {
   post: Post;
+  priority?: boolean;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, priority }: PostCardProps) {
   const timeAgo = formatDistanceToNow(new Date(post.published_at), {
     addSuffix: true,
     locale: ko,
@@ -32,6 +33,7 @@ export default function PostCard({ post }: PostCardProps) {
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
+                priority={priority}
               />
             ) : (
               <>
