@@ -3,17 +3,24 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
 import TabBar from "@/components/home/TabBar";
-import PostCard from "@/components/ui/PostCard";
-import { getPosts } from "@/lib/posts";
+import PostGrid from "@/components/ui/PostGrid";
+import { getPosts, getTrendingPosts } from "@/lib/posts";
 import { getAndIncrementVisitorCount, getVisitorHistory } from "@/lib/stats";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default async function HomePage() {
+interface HomePageProps {
+  searchParams: Promise<{ tab?: string }>;
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { tab } = await searchParams;
+  const activeTab = tab ?? "트렌딩";
+
   const [posts, visitorCount, visitorHistory] = await Promise.all([
-    getPosts(),
+    activeTab === "트렌딩" ? getTrendingPosts() : getPosts(activeTab),
     getAndIncrementVisitorCount(),
     getVisitorHistory(7),
   ]);
@@ -41,11 +48,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post, index) => (
-              <PostCard key={post.id} post={post} priority={index < 3} />
-            ))}
-          </div>
+          <PostGrid posts={posts} />
         </div>
       </section>
     </div>

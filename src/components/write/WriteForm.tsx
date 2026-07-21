@@ -20,15 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
-const TAGS = [
-  "React",
-  "TypeScript",
-  "Next.js",
-  "CSS",
-  "성능최적화",
-  "개발일지",
-];
+import { POST_TAGS as TAGS } from "@/lib/tags";
 
 const COLORS = [
   { color: "#1DC4D0", accent: "#0D9AA8" },
@@ -215,7 +207,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
           className="h-auto rounded-xl border-border bg-surface-subtle px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0 read-only:opacity-50"
         />
         {isEditMode && (
-          <p className="mt-2 text-xs text-foreground/28">
+          <p className="mt-2 text-xs text-muted-foreground">
             슬러그는 링크가 깨지지 않도록 수정할 수 없어요.
           </p>
         )}
@@ -281,7 +273,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
             <MarkdownPreview content={content} />
           </div>
         </div>
-        <p className="mt-2 text-xs text-foreground/28">
+        <p className="mt-2 text-xs text-muted-foreground">
           커서 위치에 <code className="text-foreground/45">![설명](url)</code>
           형식으로 들어갑니다. jpg/png/webp/gif, 최대 5MB.
         </p>
@@ -334,7 +326,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
             {isCoverUploading ? "업로드 중..." : "이미지 선택"}
           </Button>
         )}
-        <p className="mt-2 text-xs text-foreground/28">
+        <p className="mt-2 text-xs text-muted-foreground">
           선택하지 않으면 아래 썸네일 색으로 카드가 표시됩니다.
         </p>
       </div>
