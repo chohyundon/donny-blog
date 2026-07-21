@@ -6,6 +6,7 @@ import TabBar from "@/components/home/TabBar";
 import PostGrid from "@/components/ui/PostGrid";
 import { getPosts, getTrendingPosts } from "@/lib/posts";
 import { getAndIncrementVisitorCount, getVisitorHistory } from "@/lib/stats";
+import { getAuthUser } from "@/lib/auth/author";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -19,9 +20,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const { tab } = await searchParams;
   const activeTab = tab ?? "트렌딩";
 
+  const user = await getAuthUser();
+
   const [posts, visitorCount, visitorHistory] = await Promise.all([
     activeTab === "트렌딩" ? getTrendingPosts() : getPosts(activeTab),
-    getAndIncrementVisitorCount(),
+    getAndIncrementVisitorCount(user?.email),
     getVisitorHistory(7),
   ]);
 
