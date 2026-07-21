@@ -11,7 +11,7 @@ function MarkdownImage(props: MarkdownImageProps) {
   if (!src) return null;
 
   return (
-    <span className="my-8 block overflow-hidden rounded-xl border border-white/8">
+    <span className="my-8 block overflow-hidden rounded-xl border border-border">
       <Image
         src={src}
         alt={alt}

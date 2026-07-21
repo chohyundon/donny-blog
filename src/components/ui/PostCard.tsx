@@ -9,9 +9,10 @@ import type { Post } from "@/types";
 
 interface PostCardProps {
   post: Post;
+  priority?: boolean;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, priority }: PostCardProps) {
   const timeAgo = formatDistanceToNow(new Date(post.published_at), {
     addSuffix: true,
     locale: ko,
@@ -20,7 +21,7 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <article>
       <Link href={`/blog/${post.slug}`} className="group block">
-        <Card className="card-hover h-full gap-0 overflow-hidden rounded-2xl border border-white/[0.07] bg-card py-0 ring-0">
+        <Card className="card-hover h-full gap-0 overflow-hidden rounded-2xl border border-border bg-card py-0 ring-0">
           {/* Thumbnail */}
           <div
             className="relative h-44 overflow-hidden"
@@ -32,6 +33,7 @@ export default function PostCard({ post }: PostCardProps) {
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
+                priority={priority}
               />
             ) : (
               <>
@@ -52,10 +54,10 @@ export default function PostCard({ post }: PostCardProps) {
 
           {/* Content */}
           <div className="flex flex-col gap-3 p-5">
-            <h2 className="line-clamp-2 text-[15px] font-bold leading-snug text-white/90 transition-colors group-hover:text-white">
+            <h2 className="line-clamp-2 text-[15px] font-bold leading-snug text-foreground/90 transition-colors group-hover:text-foreground">
               {post.title}
             </h2>
-            <p className="line-clamp-2 text-xs leading-relaxed text-white/45">
+            <p className="line-clamp-2 text-xs leading-relaxed text-foreground/45">
               {post.excerpt}
             </p>
 
@@ -67,7 +69,7 @@ export default function PostCard({ post }: PostCardProps) {
                   className="h-6 w-6 rounded-full"
                   style={{ backgroundColor: post.thumbnail_color }}
                 />
-                <span className="text-xs text-white/55">
+                <span className="text-xs text-foreground/55">
                   donny · {timeAgo}
                 </span>
               </div>
@@ -77,7 +79,7 @@ export default function PostCard({ post }: PostCardProps) {
                   <Heart size={12} />
                   {post.likes}
                 </span>
-                <span className="flex items-center gap-1 text-xs text-white/55">
+                <span className="flex items-center gap-1 text-xs text-foreground/55">
                   <MessageCircle size={12} />
                   {post.comments_count}
                 </span>

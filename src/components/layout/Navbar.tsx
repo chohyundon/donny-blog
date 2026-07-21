@@ -10,6 +10,7 @@ import { AUTHOR_EMAIL } from "@/lib/auth/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 import type { CommentAuthor } from "@/types";
 
 const NAV_ITEMS = [
@@ -93,22 +94,22 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/8 bg-[#10101a]/90 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-8">
         <Link
           href="/"
-          className="shrink-0 text-lg font-bold tracking-tight text-white">
+          className="shrink-0 text-lg font-bold tracking-tight text-foreground">
           donny.log
         </Link>
 
         {searchOpen ? (
-          <div className="mx-8 flex flex-1 items-center gap-3 rounded-xl border border-white/12 bg-white/5 px-4 py-2">
-            <Search size={15} className="shrink-0 text-white/40" />
+          <div className="mx-8 flex flex-1 items-center gap-3 rounded-xl border border-border bg-surface-subtle px-4 py-2">
+            <Search size={15} className="shrink-0 text-foreground/40" />
             <Input
               autoFocus
               aria-label="포스트 검색"
               placeholder="포스트 검색..."
-              className="h-auto flex-1 border-0 bg-transparent p-0 text-sm text-white shadow-none placeholder:text-white/30 focus-visible:ring-0"
+              className="h-auto flex-1 border-0 bg-transparent p-0 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:ring-0"
             />
             <Button
               type="button"
@@ -116,7 +117,7 @@ export default function Navbar() {
               variant="ghost"
               size="icon-sm"
               onClick={() => setSearchOpen(false)}
-              className="text-white/40 hover:bg-transparent hover:text-white">
+              className="text-foreground/40 hover:bg-transparent hover:text-foreground">
               <X size={15} />
             </Button>
           </div>
@@ -126,7 +127,7 @@ export default function Navbar() {
               <li key={item.label}>
                 <Link
                   href={item.href}
-                  className="text-sm text-white/50 transition-colors hover:text-white">
+                  className="text-sm text-foreground/50 transition-colors hover:text-foreground">
                   {item.label}
                 </Link>
               </li>
@@ -135,6 +136,7 @@ export default function Navbar() {
         )}
 
         <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
           {!searchOpen && (
             <Button
               type="button"
@@ -142,7 +144,7 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setSearchOpen(true)}
-              className="text-white/50 hover:bg-white/8 hover:text-white">
+              className="text-foreground/50 hover:bg-surface-hover hover:text-foreground">
               <Search size={17} />
             </Button>
           )}
@@ -153,7 +155,7 @@ export default function Navbar() {
               variant="outline"
               onClick={handleSignOut}
               disabled={isPending}
-              className="hidden items-center gap-2 border-white/15 text-white/60 hover:bg-white/8 hover:text-white sm:flex">
+              className="hidden items-center gap-2 border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground sm:flex">
               {user.avatarUrl ? (
                 <Avatar size="sm" className="size-5">
                   <AvatarImage src={user.avatarUrl} alt={user.name} />
@@ -167,7 +169,7 @@ export default function Navbar() {
               type="button"
               variant="outline"
               onClick={handleGitHubLogin}
-              className="hidden border-white/15 text-white/60 hover:bg-white/8 hover:text-white sm:flex">
+              className="hidden border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground sm:flex">
               GitHub 로그인
             </Button>
           )}

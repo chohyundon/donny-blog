@@ -33,7 +33,7 @@ export default async function HomePage() {
 
         <div className="mx-auto max-w-7xl px-8 py-10">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-white">Latest Articles</h2>
+            <h2 className="text-2xl font-bold text-foreground">Latest Articles</h2>
             <Link
               href="/blog"
               className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
@@ -42,8 +42,8 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+            {posts.map((post, index) => (
+              <PostCard key={post.id} post={post} priority={index < 3} />
             ))}
           </div>
         </div>

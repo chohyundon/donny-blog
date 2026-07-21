@@ -5,39 +5,46 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #10101a;
-  --foreground: #f1f5f9;
-  --card: #16161f;
-  --card-foreground: #f1f5f9;
-  --popover: #16161f;
-  --popover-foreground: #f1f5f9;
+  --background: #ffffff;
+  --foreground: #10101a;
+  --card: #f8f8fb;
+  --card-foreground: #10101a;
+  --popover: #ffffff;
+  --popover-foreground: #10101a;
   --primary: #6366f1;
   --primary-foreground: #ffffff;
-  --secondary: #1a1a24;
-  --secondary-foreground: #f1f5f9;
-  --muted: #1a1a24;
-  --muted-foreground: rgba(241, 245, 249, 0.45);
-  --accent: #1a1a24;
-  --accent-foreground: #f1f5f9;
-  --destructive: #fb7185;
+  --secondary: #f1f1f6;
+  --secondary-foreground: #10101a;
+  --muted: #f1f1f6;
+  --muted-foreground: rgba(16, 16, 26, 0.55);
+  --accent: #f1f1f6;
+  --accent-foreground: #10101a;
+  --destructive: #e11d48;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.1);
+  --border: rgba(16, 16, 26, 0.1);
+  --input: rgba(16, 16, 26, 0.12);
   --ring: #6366f1;
   --chart-1: #6366f1;
   --chart-2: #a78bfa;
   --chart-3: #818cf8;
-  --chart-4: #fb7185;
-  --chart-5: #28cc8f;
+  --chart-4: #e11d48;
+  --chart-5: #199063;
   --radius: 0.625rem;
-  --sidebar: #16161f;
-  --sidebar-foreground: #f1f5f9;
+  --sidebar: #f8f8fb;
+  --sidebar-foreground: #10101a;
   --sidebar-primary: #6366f1;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a24;
-  --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-accent: #f1f1f6;
+  --sidebar-accent-foreground: #10101a;
+  --sidebar-border: rgba(16, 16, 26, 0.1);
   --sidebar-ring: #6366f1;
+  --surface-subtle: rgba(16, 16, 26, 0.04);
+  --surface-hover: rgba(16, 16, 26, 0.08);
+  --code-bg: #f4f4f8;
+  --code-border: rgba(16, 16, 26, 0.1);
+  --code-foreground: #1f2937;
+  --code-inline-bg: rgba(16, 16, 26, 0.06);
+  --code-inline-foreground: #7c3aed;
 }
 
 .dark {
@@ -73,6 +80,13 @@
   --sidebar-accent-foreground: #f1f5f9;
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #6366f1;
+  --surface-subtle: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --code-bg: #16161f;
+  --code-border: rgba(255, 255, 255, 0.08);
+  --code-foreground: #e2e8f0;
+  --code-inline-bg: rgba(255, 255, 255, 0.08);
+  --code-inline-foreground: #a78bfa;
 }
 
 * {
@@ -116,18 +130,18 @@ body {
 
 /* Prose styles for blog content */
 .prose-blog {
-  color: rgba(255, 255, 255, 0.85);
+  color: color-mix(in oklch, var(--foreground) 85%, transparent);
   line-height: 1.8;
   font-size: 17px;
 }
 .prose-blog h2 {
-  color: #f1f5f9;
+  color: var(--foreground);
   font-size: 1.6rem;
   font-weight: 700;
   margin: 2.5rem 0 1rem;
 }
 .prose-blog h3 {
-  color: #f1f5f9;
+  color: var(--foreground);
   font-size: 1.25rem;
   font-weight: 600;
   margin: 2rem 0 0.75rem;
@@ -140,16 +154,16 @@ body {
   text-decoration: underline;
 }
 .prose-blog code {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--code-inline-bg);
   border-radius: 4px;
   padding: 2px 6px;
   font-size: 0.88em;
   font-family: "Fira Code", "Roboto Mono", monospace;
-  color: #a78bfa;
+  color: var(--code-inline-foreground);
 }
 .prose-blog pre {
-  background: #16161f;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   overflow-x: auto;
@@ -158,13 +172,13 @@ body {
 .prose-blog pre code {
   background: none;
   padding: 0;
-  color: #e2e8f0;
+  color: var(--code-foreground);
   font-size: 0.9rem;
 }
 .prose-blog blockquote {
   border-left: 3px solid #6366f1;
   padding-left: 1.25rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: color-mix(in oklch, var(--foreground) 55%, transparent);
   font-style: italic;
   margin: 1.5rem 0;
 }
@@ -177,7 +191,7 @@ body {
   margin: 0.4rem 0;
 }
 .prose-blog hr {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--border);
   margin: 2rem 0;
 }
 
@@ -216,6 +230,13 @@ body {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-hover: var(--surface-hover);
+  --color-code-bg: var(--code-bg);
+  --color-code-border: var(--code-border);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-inline-bg: var(--code-inline-bg);
+  --color-code-inline-foreground: var(--code-inline-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);

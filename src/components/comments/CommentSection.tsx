@@ -96,14 +96,14 @@ export default function CommentSection({
   };
 
   return (
-    <section id="comments" className="mt-16 border-t border-white/8 pt-10">
-      <h2 className="text-lg font-semibold text-white">
+    <section id="comments" className="mt-16 border-t border-border pt-10">
+      <h2 className="text-lg font-semibold text-foreground">
         댓글 {initialComments.length > 0 && (
-          <span className="font-normal text-white/40">{initialComments.length}</span>
+          <span className="font-normal text-foreground/40">{initialComments.length}</span>
         )}
       </h2>
 
-      <p className="mt-2 text-sm text-white/40">
+      <p className="mt-2 text-sm text-foreground/40">
         끝까지 읽어주셔서 감사합니다. 좋아요와 응원 댓글은 블로그 운영에 큰 힘이 됩니다!
       </p>
 
@@ -117,9 +117,9 @@ export default function CommentSection({
                   <AvatarFallback>{user.name.slice(0, 1)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium text-white/80">{user.name}</p>
+                  <p className="text-sm font-medium text-foreground/80">{user.name}</p>
                   {user.github && (
-                    <p className="text-xs text-white/35">@{user.github}</p>
+                    <p className="text-xs text-foreground/35">@{user.github}</p>
                   )}
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function CommentSection({
                 variant="ghost"
                 onClick={handleSignOut}
                 disabled={isPending}
-                className="h-auto p-0 text-xs text-white/35 hover:bg-transparent hover:text-white/70"
+                className="h-auto p-0 text-xs text-foreground/35 hover:bg-transparent hover:text-foreground/70"
               >
                 로그아웃
               </Button>
@@ -140,11 +140,11 @@ export default function CommentSection({
               placeholder="댓글을 남겨주세요..."
               rows={4}
               maxLength={2000}
-              className="resize-y rounded-xl border-white/10 bg-white/4 px-4 py-3 text-sm leading-relaxed text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0"
+              className="resize-y rounded-xl border-border bg-surface-subtle px-4 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0"
             />
 
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs text-white/25">{content.length}/2000</p>
+              <p className="text-xs text-foreground/25">{content.length}/2000</p>
               <Button
                 type="submit"
                 disabled={isPending || !content.trim()}
@@ -155,8 +155,8 @@ export default function CommentSection({
             </div>
           </form>
         ) : (
-          <Card className="gap-0 rounded-xl border border-dashed border-white/12 bg-white/2 px-5 py-8 text-center ring-0">
-            <p className="text-sm text-white/45">
+          <Card className="gap-0 rounded-xl border border-dashed border-border bg-surface-subtle px-5 py-8 text-center ring-0">
+            <p className="text-sm text-foreground/45">
               댓글을 남기려면 GitHub 로그인이 필요합니다.
             </p>
             <Button
@@ -164,7 +164,7 @@ export default function CommentSection({
               variant="outline"
               onClick={handleGitHubLogin}
               disabled={isLoggingIn}
-              className="mt-5 self-center border-white/12 bg-white/5 text-white/80 hover:bg-white/8 hover:text-white"
+              className="mt-5 self-center border-border bg-surface-subtle text-foreground/80 hover:bg-surface-hover hover:text-foreground"
             >
               <GitHubIcon />
               {isLoggingIn ? "이동 중..." : "GitHub으로 로그인"}
@@ -179,7 +179,7 @@ export default function CommentSection({
 
       <ul className="mt-10 space-y-6">
         {initialComments.length === 0 ? (
-          <li className="text-sm text-white/30">아직 댓글이 없습니다.</li>
+          <li className="text-sm text-foreground/30">아직 댓글이 없습니다.</li>
         ) : (
           initialComments.map((comment) => {
             const timeAgo = formatDistanceToNow(new Date(comment.created_at), {
@@ -200,7 +200,7 @@ export default function CommentSection({
 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="text-sm font-medium text-white/80">
+                    <span className="text-sm font-medium text-foreground/80">
                       {comment.author_name}
                     </span>
                     {comment.author_github && (
@@ -208,14 +208,14 @@ export default function CommentSection({
                         href={`https://github.com/${comment.author_github}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs text-white/30 hover:text-white/55"
+                        className="text-xs text-foreground/30 hover:text-foreground/55"
                       >
                         @{comment.author_github}
                       </a>
                     )}
-                    <span className="text-xs text-white/25">{timeAgo}</span>
+                    <span className="text-xs text-foreground/25">{timeAgo}</span>
                   </div>
-                  <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-white/60">
+                  <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-foreground/60">
                     {comment.content}
                   </p>
                   {isOwner && (
@@ -224,7 +224,7 @@ export default function CommentSection({
                       variant="ghost"
                       onClick={() => handleDelete(comment.id)}
                       disabled={isPending}
-                      className="mt-2 h-auto p-0 text-xs text-white/25 hover:bg-transparent hover:text-destructive"
+                      className="mt-2 h-auto p-0 text-xs text-foreground/25 hover:bg-transparent hover:text-destructive"
                     >
                       삭제
                     </Button>

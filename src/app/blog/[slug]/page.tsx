@@ -98,7 +98,7 @@ export default async function PostPage({ params }: PostPageProps) {
             href="/blog"
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "h-auto gap-2 p-0 text-sm text-white/40 hover:bg-transparent hover:text-white",
+              "h-auto gap-2 p-0 text-sm text-foreground/40 hover:bg-transparent hover:text-foreground",
             )}>
             <ArrowLeft size={15} />
             블로그로 돌아가기
@@ -134,7 +134,7 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         </div>
 
-        <div className="mb-6 flex items-center gap-4 text-sm text-white/55">
+        <div className="mb-6 flex items-center gap-4 text-sm text-foreground/55">
           <div className="flex items-center gap-2">
             <div
               className="h-6 w-6 rounded-full"
@@ -151,19 +151,19 @@ export default async function PostPage({ params }: PostPageProps) {
           </span>
         </div>
 
-        <h1 className="mb-8 text-4xl font-extrabold leading-tight text-white">
+        <h1 className="mb-8 text-4xl font-extrabold leading-tight text-foreground">
           {post.title}
         </h1>
 
         {hasMarkdownBody ? (
           <MarkdownContent source={post.content} />
         ) : (
-          <article className="prose-blog space-y-6 text-white/80">
+          <article className="prose-blog space-y-6 text-foreground/80">
             <p>{post.excerpt}</p>
           </article>
         )}
 
-        <div className="mt-16 flex items-center justify-between border-t border-white/8 pt-8">
+        <div className="mt-16 flex items-center justify-between border-t border-border pt-8">
           <div className="flex items-center gap-4">
             <button
               className={cn(
@@ -177,7 +177,7 @@ export default async function PostPage({ params }: PostPageProps) {
               href="#comments"
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "gap-2 rounded-xl border-white/10 bg-white/4 px-4 py-2.5 text-sm text-white/40 hover:bg-white/8 hover:text-white",
+                "gap-2 rounded-xl border-border bg-surface-subtle px-4 py-2.5 text-sm text-foreground/40 hover:bg-surface-hover hover:text-foreground",
               )}>
               <MessageCircle size={15} />
               {comments.length} 댓글
@@ -185,7 +185,7 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
           <Link
             href="/blog"
-            className="text-sm text-white/55 transition-colors hover:text-white">
+            className="text-sm text-foreground/55 transition-colors hover:text-foreground">
             다른 글 보기 →
           </Link>
         </div>
