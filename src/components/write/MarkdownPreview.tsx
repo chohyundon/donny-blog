@@ -1,9 +1,8 @@
 "use client";
 
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import { markdownComponents } from "@/components/blog/markdown-components";
+import { remarkPlugins, previewRehypePlugins } from "@/lib/markdown/config";
 
 interface MarkdownPreviewProps {
   content: string;
@@ -22,8 +21,8 @@ export default function MarkdownPreview({ content }: MarkdownPreviewProps) {
     <div className="h-full min-h-[24rem] overflow-y-auto rounded-xl border border-border bg-surface-subtle px-4 py-3">
       <div className="prose-blog">
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
+          remarkPlugins={remarkPlugins}
+          rehypePlugins={previewRehypePlugins}
           components={markdownComponents}>
           {content}
         </ReactMarkdown>

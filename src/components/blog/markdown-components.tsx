@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ComponentPropsWithoutRef } from "react";
 import type { Components, ExtraProps } from "react-markdown";
+import CodeBlock from "@/components/blog/CodeBlock";
 
 type MarkdownImageProps = ComponentPropsWithoutRef<"img"> & ExtraProps;
 
@@ -26,4 +27,5 @@ function MarkdownImage(props: MarkdownImageProps) {
 
 export const markdownComponents: Components = {
   img: MarkdownImage,
+  pre: CodeBlock,
 };

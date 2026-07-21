@@ -161,19 +161,16 @@ body {
   font-family: "Fira Code", "Roboto Mono", monospace;
   color: var(--code-inline-foreground);
 }
-.prose-blog pre {
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-}
 .prose-blog pre code {
   background: none;
   padding: 0;
   color: var(--code-foreground);
-  font-size: 0.9rem;
+}
+.prose-blog pre code span {
+  color: var(--shiki-light);
+}
+.dark .prose-blog pre code span {
+  color: var(--shiki-dark);
 }
 .prose-blog blockquote {
   border-left: 3px solid #6366f1;
