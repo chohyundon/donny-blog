@@ -23,7 +23,7 @@ export default function TableOfContents({
         const visible = entries.find((entry) => entry.isIntersecting);
         if (visible) setActiveId(visible.target.id);
       },
-      { rootMargin: "-96px 0px -70% 0px" },
+      { rootMargin: "-80px 0px -70% 0px" },
     );
 
     headings.forEach(({ id }) => {
