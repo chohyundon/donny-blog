@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { isAuthorEmail } from "@/lib/auth/constants";
 
 export interface DailyVisit {
   date: string;
@@ -14,9 +15,22 @@ function getMockHistory(): DailyVisit[] {
   });
 }
 
-export async function getAndIncrementVisitorCount(): Promise<number> {
+export async function getAndIncrementVisitorCount(
+  viewerEmail?: string | null,
+): Promise<number> {
   try {
     const supabase = await createClient();
+
+    if (isAuthorEmail(viewerEmail)) {
+      const { data, error } = await supabase
+        .from("site_stats")
+        .select("value")
+        .eq("key", "visitor_count")
+        .single();
+      if (error) throw error;
+      return (data?.value as number) ?? 0;
+    }
+
     const { data, error } = await supabase.rpc("increment_visitor_count");
     if (error) throw error;
     return (data as number) ?? 0;
