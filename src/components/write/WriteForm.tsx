@@ -182,19 +182,19 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <Label className="mb-2 text-sm font-normal text-white/45">제목</Label>
+        <Label className="mb-2 text-sm font-normal text-foreground/45">제목</Label>
         <Input
           name="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
           placeholder="글 제목"
-          className="h-auto rounded-xl border-white/10 bg-white/4 px-4 py-3 text-base text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0"
+          className="h-auto rounded-xl border-border bg-surface-subtle px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0"
         />
       </div>
 
       <div>
-        <Label className="mb-2 text-sm font-normal text-white/45">슬러그</Label>
+        <Label className="mb-2 text-sm font-normal text-foreground/45">슬러그</Label>
         <Input
           name="slug"
           value={previewSlug}
@@ -204,7 +204,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
           }}
           readOnly={isEditMode}
           placeholder="my-post-slug"
-          className="h-auto rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0 read-only:opacity-50"
+          className="h-auto rounded-xl border-border bg-surface-subtle px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0 read-only:opacity-50"
         />
         {isEditMode && (
           <p className="mt-2 text-xs text-muted-foreground">
@@ -214,20 +214,20 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
       </div>
 
       <div>
-        <Label className="mb-2 text-sm font-normal text-white/45">요약</Label>
+        <Label className="mb-2 text-sm font-normal text-foreground/45">요약</Label>
         <Textarea
           name="excerpt"
           value={excerpt}
           onChange={(e) => setExcerpt(e.target.value)}
           rows={2}
           placeholder="목록에 보일 짧은 소개"
-          className="resize-y rounded-xl border-white/10 bg-white/4 px-4 py-3 text-sm leading-relaxed text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0"
+          className="resize-y rounded-xl border-border bg-surface-subtle px-4 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0"
         />
       </div>
 
       <div>
         <div className="mb-2 flex items-center justify-between gap-3">
-          <Label className="text-sm font-normal text-white/45">본문</Label>
+          <Label className="text-sm font-normal text-foreground/45">본문</Label>
           <div className="flex items-center gap-2">
             <input
               ref={fileInputRef}
@@ -245,7 +245,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
               size="sm"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading || isPending}
-              className="border-white/10 bg-white/4 text-xs text-white/60 hover:bg-white/8 hover:text-white">
+              className="border-border bg-surface-subtle text-xs text-foreground/60 hover:bg-surface-hover hover:text-foreground">
               {isUploading ? (
                 <LoaderCircle size={13} className="animate-spin" />
               ) : (
@@ -267,20 +267,20 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
             placeholder={
               "마크다운으로 작성하세요.\n중간중간 [이미지 넣기]로 사진을 삽입할 수 있습니다."
             }
-            className="resize-y rounded-xl border-white/10 bg-white/4 px-4 py-3 font-mono text-sm leading-relaxed text-white placeholder:text-white/25 focus-visible:border-white/20 focus-visible:ring-0 lg:h-auto"
+            className="resize-y rounded-xl border-border bg-surface-subtle px-4 py-3 font-mono text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-0 lg:h-auto"
           />
           <div className="hidden lg:block">
             <MarkdownPreview content={content} />
           </div>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          커서 위치에 <code className="text-white/45">![설명](url)</code>
+          커서 위치에 <code className="text-foreground/45">![설명](url)</code>
           형식으로 들어갑니다. jpg/png/webp/gif, 최대 5MB.
         </p>
       </div>
 
       <div>
-        <Label className="mb-2 text-sm font-normal text-white/45">
+        <Label className="mb-2 text-sm font-normal text-foreground/45">
           커버 이미지
         </Label>
         <input
@@ -294,7 +294,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
           }}
         />
         {coverImageUrl ? (
-          <div className="relative h-40 w-full max-w-xs overflow-hidden rounded-xl border border-white/10">
+          <div className="relative h-40 w-full max-w-xs overflow-hidden rounded-xl border border-border">
             <Image
               src={coverImageUrl}
               alt="커버 이미지 미리보기"
@@ -317,7 +317,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
             size="sm"
             onClick={() => coverInputRef.current?.click()}
             disabled={isCoverUploading || isPending}
-            className="border-white/10 bg-white/4 text-xs text-white/60 hover:bg-white/8 hover:text-white">
+            className="border-border bg-surface-subtle text-xs text-foreground/60 hover:bg-surface-hover hover:text-foreground">
             {isCoverUploading ? (
               <LoaderCircle size={13} className="animate-spin" />
             ) : (
@@ -333,11 +333,11 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <Label className="mb-2 text-sm font-normal text-white/45">태그</Label>
+          <Label className="mb-2 text-sm font-normal text-foreground/45">태그</Label>
           <Select
             value={tag}
             onValueChange={(value) => setTag(value as string)}>
-            <SelectTrigger className="h-auto w-full rounded-xl border-white/10 bg-[#16161f] px-4 py-3 text-sm text-white focus-visible:border-white/20 focus-visible:ring-0">
+            <SelectTrigger className="h-auto w-full rounded-xl border-border bg-card px-4 py-3 text-sm text-foreground focus-visible:border-ring focus-visible:ring-0">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -351,7 +351,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
         </div>
 
         <div>
-          <Label className="mb-2 text-sm font-normal text-white/45">
+          <Label className="mb-2 text-sm font-normal text-foreground/45">
             썸네일 색
           </Label>
           <div className="flex flex-wrap gap-2">
@@ -362,7 +362,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
                 onClick={() => setColorIndex(index)}
                 className={`h-9 w-9 rounded-full border-2 transition-transform ${
                   colorIndex === index
-                    ? "scale-110 border-white"
+                    ? "scale-110 border-foreground"
                     : "border-transparent opacity-70 hover:opacity-100"
                 }`}
                 style={{ backgroundColor: item.color }}
@@ -373,7 +373,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
         </div>
       </div>
 
-      <Label className="flex items-center gap-2 text-sm font-normal text-white/55">
+      <Label className="flex items-center gap-2 text-sm font-normal text-foreground/55">
         <Checkbox
           name="published"
           checked={published}
@@ -397,7 +397,7 @@ export default function WriteForm({ initialError, initialPost }: WriteFormProps)
           variant="outline"
           size="lg"
           onClick={() => router.back()}
-          className="rounded-xl border-white/10 px-5 py-3 text-sm text-white/50 hover:bg-white/5 hover:text-white">
+          className="rounded-xl border-border px-5 py-3 text-sm text-foreground/50 hover:bg-surface-hover hover:text-foreground">
           취소
         </Button>
       </div>

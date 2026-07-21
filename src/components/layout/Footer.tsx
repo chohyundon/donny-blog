@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { GitFork, X, Rss } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 const LINKS = {
@@ -20,24 +19,24 @@ const LINKS = {
 
 const socialIconClass = cn(
   buttonVariants({ variant: "outline", size: "icon" }),
-  "border-white/[0.1] text-white/40 hover:border-white/20 hover:bg-transparent hover:text-white",
+  "border-border text-foreground/40 hover:border-foreground/20 hover:bg-transparent hover:text-foreground",
 );
 
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-white/[0.08] bg-[#10101a]">
-      <div className="mx-auto max-w-7xl px-8 py-16">
-        <div className="flex flex-col justify-between gap-12 md:flex-row">
+    <footer className="mt-16 border-t border-border bg-background">
+      <div className="mx-auto max-w-7xl px-8 py-10">
+        <div className="flex flex-col justify-between gap-8 md:flex-row">
           {/* Brand */}
           <div className="max-w-xs">
-            <Link href="/" className="text-lg font-bold text-white">
+            <Link href="/" className="text-lg font-bold text-foreground">
               donny.log
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-white/60">
+            <p className="mt-3 text-sm leading-relaxed text-foreground/60">
               React, TypeScript, Next.js 그리고 더 나은 웹을 위한 실전 경험과
               인사이트를 기록합니다.
             </p>
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-4 flex items-center gap-3">
               <a
                 href="https://github.com"
                 target="_blank"
@@ -64,17 +63,17 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex gap-16">
+          <div className="flex gap-10">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-foreground/50">
                 Blog
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {LINKS.blog.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="text-sm text-white/50 transition-colors hover:text-white">
+                      className="text-sm text-foreground/50 transition-colors hover:text-foreground">
                       {l.label}
                     </Link>
                   </li>
@@ -82,15 +81,15 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-foreground/50">
                 More
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {LINKS.me.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="text-sm text-white/50 transition-colors hover:text-white">
+                      className="text-sm text-foreground/50 transition-colors hover:text-foreground">
                       {l.label}
                     </Link>
                   </li>
@@ -98,15 +97,6 @@ export default function Footer() {
               </ul>
             </div>
           </div>
-        </div>
-
-        <Separator className="mt-12 bg-white/[0.06]" />
-
-        <div className="flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
-          <p className="text-xs text-white/50">
-            © 2025 Donny. All rights reserved.
-          </p>
-          <p className="text-xs text-white/50">Built with Next.js & Supabase</p>
         </div>
       </div>
     </footer>

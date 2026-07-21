@@ -12,7 +12,7 @@ export default function PostGrid({
 }: PostGridProps) {
   if (posts.length === 0) {
     return (
-      <div className="py-20 text-center text-white/50">{emptyMessage}</div>
+      <div className="py-20 text-center text-foreground/50">{emptyMessage}</div>
     );
   }
 

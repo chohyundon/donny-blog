@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ThemeProvider from "@/components/providers/ThemeProvider";
+import ThemedToastContainer from "@/components/providers/ThemedToastContainer";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { getSiteUrl } from "@/lib/site";
@@ -33,17 +34,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={cn("dark h-full", "font-sans", geist.variable)}>
+    <html
+      lang="ko"
+      className={cn("h-full", "font-sans", geist.variable)}
+      suppressHydrationWarning>
       <body className="min-h-full antialiased">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black">
-          본문으로 건너뛰기
-        </a>
-        <Navbar />
-        <main id="main-content">{children}</main>
-        <Footer />
-        <ToastContainer theme="dark" position="bottom-right" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black">
+            본문으로 건너뛰기
+          </a>
+          <Navbar />
+          <main id="main-content">{children}</main>
+          <Footer />
+          <ThemedToastContainer />
+        </ThemeProvider>
       </body>
     </html>
   );

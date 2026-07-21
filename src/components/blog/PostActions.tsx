@@ -32,19 +32,19 @@ export default function PostActions({ slug }: PostActionsProps) {
   const handleDeleteClick = () => {
     toast(
       ({ closeToast }: { closeToast?: () => void }) => (
-        <div className="text-sm text-white">
+        <div className="text-sm text-foreground">
           <p className="mb-3">정말 삭제하시겠습니까?</p>
           <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => closeToast?.()}
-              className="rounded-md px-3 py-1.5 text-xs text-white/60 hover:bg-white/10">
+              className="rounded-md px-3 py-1.5 text-xs text-foreground/60 hover:bg-surface-hover">
               취소
             </button>
             <button
               type="button"
               onClick={() => confirmDelete(closeToast)}
-              className="rounded-md bg-rose-500/90 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-500">
+              className="rounded-md bg-rose-500/90 px-3 py-1.5 text-xs font-medium text-destructive-foreground hover:bg-rose-500">
               삭제
             </button>
           </div>
@@ -58,7 +58,7 @@ export default function PostActions({ slug }: PostActionsProps) {
     <div className="flex items-center gap-4 text-sm">
       <Link
         href={`/write/${slug}`}
-        className="flex items-center gap-1.5 text-white/40 transition-colors hover:text-white">
+        className="flex items-center gap-1.5 text-foreground/40 transition-colors hover:text-foreground">
         <Pencil size={14} />
         수정
       </Link>
@@ -66,7 +66,7 @@ export default function PostActions({ slug }: PostActionsProps) {
         type="button"
         onClick={handleDeleteClick}
         disabled={isPending}
-        className="flex items-center gap-1.5 text-white/40 transition-colors hover:text-rose-400 disabled:opacity-50">
+        className="flex items-center gap-1.5 text-foreground/40 transition-colors hover:text-rose-400 disabled:opacity-50">
         <Trash2 size={14} />
         삭제
       </button>

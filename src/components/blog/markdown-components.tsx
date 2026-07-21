@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ComponentPropsWithoutRef } from "react";
 import type { Components, ExtraProps } from "react-markdown";
+import CodeBlock from "@/components/blog/CodeBlock";
 
 type MarkdownImageProps = ComponentPropsWithoutRef<"img"> & ExtraProps;
 
@@ -11,7 +12,7 @@ function MarkdownImage(props: MarkdownImageProps) {
   if (!src) return null;
 
   return (
-    <span className="my-8 block overflow-hidden rounded-xl border border-white/8">
+    <span className="my-8 block overflow-hidden rounded-xl border border-border">
       <Image
         src={src}
         alt={alt}
@@ -26,4 +27,5 @@ function MarkdownImage(props: MarkdownImageProps) {
 
 export const markdownComponents: Components = {
   img: MarkdownImage,
+  pre: CodeBlock,
 };

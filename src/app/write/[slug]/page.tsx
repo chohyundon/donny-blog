@@ -33,11 +33,11 @@ export default async function EditPostPage({
   return (
     <div className="mx-auto max-w-3xl px-6 pb-20 pt-24 sm:px-8">
       <div className="mb-10">
-        <p className="text-xs uppercase tracking-[0.16em] text-white/30">
+        <p className="text-xs uppercase tracking-[0.16em] text-foreground/30">
           Edit Post
         </p>
-        <h1 className="mt-3 text-3xl font-semibold text-white">글 수정</h1>
-        <p className="mt-2 text-sm text-white/40">{author.email}로 로그인 중</p>
+        <h1 className="mt-3 text-3xl font-semibold text-foreground">글 수정</h1>
+        <p className="mt-2 text-sm text-foreground/40">{author.email}로 로그인 중</p>
       </div>
 
       <WriteForm initialError={error} initialPost={post} />

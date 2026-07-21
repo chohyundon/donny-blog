@@ -17,19 +17,19 @@ export default function TabBar() {
   };
 
   return (
-    <div className="relative border-b border-white/[0.08]">
+    <div className="relative border-b border-border">
       <div className="mx-auto max-w-7xl px-8">
         <Tabs
           value={activeTab}
           onValueChange={(value) => handleTab(value as string)}>
           <TabsList
             variant="line"
-            className="scrollbar-hide h-auto w-full justify-start gap-1 overflow-x-auto bg-transparent p-0">
+            className="scrollbar-hide h-auto! w-full justify-start gap-1 overflow-x-auto bg-transparent p-0 pb-2">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab}
                 value={tab}
-                className="shrink-0 rounded-none border-none px-4 py-4 text-sm font-medium text-white/70 dark:text-white/70 data-active:text-white data-active:after:bg-primary! data-active:after:opacity-100">
+                className="shrink-0 rounded-none border-none px-4 py-4 text-sm font-medium text-foreground/70 data-active:text-foreground data-active:after:bg-primary! data-active:after:opacity-100">
                 {tab}
               </TabsTrigger>
             ))}
