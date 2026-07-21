@@ -6,13 +6,12 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
-import rehypePrettyCode from "rehype-pretty-code";
 import rehypeReact from "rehype-react";
 import { visit } from "unist-util-visit";
 import { toString as hastToString } from "hast-util-to-string";
 import type { Element, Root } from "hast";
 import { markdownComponents } from "@/components/blog/markdown-components";
-import { prettyCodeOptions } from "@/lib/markdown/config";
+import { rehypeCodeLanguage } from "@/lib/markdown/rehype-code-language";
 
 export interface TocHeading {
   id: string;
@@ -45,7 +44,7 @@ export async function renderMarkdown(source: string) {
     .use(rehypeRaw)
     .use(rehypeSlug)
     .use(() => rehypeCollectHeadings(headings))
-    .use(rehypePrettyCode, prettyCodeOptions)
+    .use(rehypeCodeLanguage)
     .use(rehypeReact, {
       Fragment,
       jsx,

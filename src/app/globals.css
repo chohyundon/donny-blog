@@ -191,12 +191,6 @@ body {
   padding: 0;
   color: var(--code-foreground);
 }
-.prose-blog pre code span {
-  color: var(--shiki-light);
-}
-.dark .prose-blog pre code span {
-  color: var(--shiki-dark);
-}
 .prose-blog blockquote {
   border-left: 3px solid #6366f1;
   padding-left: 1.25rem;
