@@ -14,6 +14,8 @@ interface PostActionsProps {
 export default function PostActions({ slug }: PostActionsProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const actionClassName =
+    "inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground/70 transition-colors hover:bg-muted hover:text-foreground";
 
   const confirmDelete = (closeToast?: () => void) => {
     closeToast?.();
@@ -55,10 +57,10 @@ export default function PostActions({ slug }: PostActionsProps) {
   };
 
   return (
-    <div className="flex items-center gap-4 text-sm">
+    <div className="flex items-center gap-2 text-sm">
       <Link
         href={`/write/${slug}`}
-        className="flex items-center gap-1.5 text-foreground/40 transition-colors hover:text-foreground">
+        className={actionClassName}>
         <Pencil size={14} />
         수정
       </Link>
@@ -66,7 +68,7 @@ export default function PostActions({ slug }: PostActionsProps) {
         type="button"
         onClick={handleDeleteClick}
         disabled={isPending}
-        className="flex items-center gap-1.5 text-foreground/40 transition-colors hover:text-rose-400 disabled:opacity-50">
+        className={`${actionClassName} hover:border-rose-200 hover:bg-rose-50 hover:text-rose-500 disabled:opacity-50 dark:hover:border-rose-900 dark:hover:bg-rose-950/40`}>
         <Trash2 size={14} />
         삭제
       </button>
