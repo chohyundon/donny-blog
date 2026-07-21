@@ -42,6 +42,7 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.10",
     "@opennextjs/cloudflare": "^1.20.1",
     "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
@@ -55,5 +56,11 @@
     "typescript": "^5",
     "unified": "^11.0.5",
     "wrangler": "^4.112.0"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
+  ]
 }
