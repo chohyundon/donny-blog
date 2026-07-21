@@ -31,5 +31,5 @@ export default async function MarkdownContent({
     })
     .process(source);
 
-  return <div className="prose-blog">{file.result}</div>;
+  return <div className="prose-blog max-w-[65ch]">{file.result}</div>;
 }
