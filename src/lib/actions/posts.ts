@@ -10,6 +10,7 @@ import {
   isE2EMockDbEnabled,
   saveE2EPost,
 } from "@/lib/e2e/mock-store";
+import { likePost } from "@/lib/posts";
 import type { Post } from "@/types";
 
 export type CreatePostResult =
@@ -258,4 +259,12 @@ export async function deletePost(slug: string): Promise<DeletePostResult> {
       error: "글을 삭제하지 못했어요. DB 권한을 확인해 주세요.",
     };
   }
+}
+
+export async function likePostAction(
+  postId: string,
+  slug: string,
+): Promise<void> {
+  await likePost(postId);
+  revalidatePath(`/blog/${slug}`);
 }
