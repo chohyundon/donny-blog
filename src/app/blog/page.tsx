@@ -7,13 +7,22 @@ import { POST_TAGS } from "@/lib/tags";
 const TAGS = ["전체", ...POST_TAGS];
 
 interface BlogPageProps {
-  searchParams: Promise<{ tag?: string; tab?: string; q?: string }>;
+  searchParams: Promise<{
+    tag?: string;
+    tab?: string;
+    q?: string | string[];
+  }>;
+}
+
+function normalizeQuery(q: string | string[] | undefined): string | undefined {
+  return Array.isArray(q) ? q[0] : q;
 }
 
 export async function generateMetadata({
   searchParams,
 }: BlogPageProps): Promise<Metadata> {
-  const { tag, q } = await searchParams;
+  const { tag, q: rawQ } = await searchParams;
+  const q = normalizeQuery(rawQ);
   const activeTag = tag && tag !== "전체" ? tag : undefined;
 
   const title = q
@@ -31,21 +40,27 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: activeTag ? `/blog?tag=${activeTag}` : "/blog",
+      canonical: q
+        ? `/blog?q=${encodeURIComponent(q)}`
+        : activeTag
+          ? `/blog?tag=${activeTag}`
+          : "/blog",
     },
     openGraph: { title, description },
   };
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { tag, tab, q } = await searchParams;
+  const { tag, tab, q: rawQ } = await searchParams;
+  const q = normalizeQuery(rawQ);
   const activeTag = tag ?? "전체";
+  const activeTagValue = tag && tag !== "전체" ? tag : undefined;
 
   const posts = q
-    ? await getPosts(undefined, q)
+    ? await getPosts(activeTagValue, q)
     : tab === "trending"
       ? await getTrendingPosts()
-      : await getPosts(tag && tag !== "전체" ? tag : undefined);
+      : await getPosts(activeTagValue);
 
   return (
     <div className="pt-24 pb-20">
@@ -63,12 +78,19 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
 
         {/* Tag filter */}
-        {!q && (
-          <div className="flex flex-wrap gap-2 mb-10">
-            {TAGS.map((t) => (
+        <div className="flex flex-wrap gap-2 mb-10">
+          {TAGS.map((t) => {
+            const qSuffix = q ? `&q=${encodeURIComponent(q)}` : "";
+            const href =
+              t === "전체"
+                ? q
+                  ? `/blog?q=${encodeURIComponent(q)}`
+                  : "/blog"
+                : `/blog?tag=${t}${qSuffix}`;
+            return (
               <Badge
                 key={t}
-                render={<a href={t === "전체" ? "/blog" : `/blog?tag=${t}`} />}
+                render={<a href={href} />}
                 className={`h-auto cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   activeTag === t
                     ? "bg-primary text-primary-foreground"
@@ -76,9 +98,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                 }`}>
                 {t}
               </Badge>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
         {/* Grid */}
         <PostGrid

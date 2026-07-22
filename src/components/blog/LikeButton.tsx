@@ -23,8 +23,9 @@ function getLikedSlugs(): string[] {
   }
 }
 
-function subscribeNoop() {
-  return () => {};
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
 }
 
 function getServerLiked() {
@@ -41,7 +42,7 @@ export default function LikeButton({
   const [, startTransition] = useTransition();
 
   const alreadyLiked = useSyncExternalStore(
-    subscribeNoop,
+    subscribe,
     () => getLikedSlugs().includes(slug),
     getServerLiked,
   );
@@ -51,12 +52,17 @@ export default function LikeButton({
     if (liked) return;
     setJustLiked(true);
     setLikes((n) => n + 1);
-    localStorage.setItem(
-      LIKED_POSTS_KEY,
-      JSON.stringify([...getLikedSlugs(), slug]),
-    );
     startTransition(async () => {
-      await likePostAction(postId, slug);
+      try {
+        await likePostAction(postId, slug);
+        localStorage.setItem(
+          LIKED_POSTS_KEY,
+          JSON.stringify([...getLikedSlugs(), slug]),
+        );
+      } catch {
+        setJustLiked(false);
+        setLikes((n) => n - 1);
+      }
     });
   };
 

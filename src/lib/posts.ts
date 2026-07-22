@@ -16,8 +16,9 @@ export async function getPosts(tag?: string, q?: string): Promise<Post[]> {
   }
 
   if (q) {
-    const escaped = q.replace(/[%_]/g, (c) => `\\${c}`);
-    query = query.or(`title.ilike.%${escaped}%,excerpt.ilike.%${escaped}%`);
+    const escapedLike = q.replace(/\\/g, "\\\\").replace(/[%_]/g, (c) => `\\${c}`);
+    const pattern = `%${escapedLike}%`.replace(/"/g, '\\"');
+    query = query.or(`title.ilike."${pattern}",excerpt.ilike."${pattern}"`);
   }
 
   const { data, error } = await query;
@@ -83,7 +84,9 @@ export async function getTrendingPosts(): Promise<Post[]> {
 }
 
 export async function likePost(postId: string): Promise<void> {
-  const supabase = createClient();
-  // Use rpc to atomically increment
-  await (await supabase).rpc("increment_likes", { post_id: postId });
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("increment_likes", {
+    post_id: postId,
+  });
+  if (error) throw error;
 }
