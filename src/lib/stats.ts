@@ -34,7 +34,8 @@ export async function getAndIncrementVisitorCount(
     const { data, error } = await supabase.rpc("increment_visitor_count");
     if (error) throw error;
     return (data as number) ?? 0;
-  } catch {
+  } catch (error) {
+    console.error("Failed to get/increment visitor count:", error);
     return 2847;
   }
 }
@@ -47,7 +48,8 @@ export async function getVisitorHistory(daysBack = 7): Promise<DailyVisit[]> {
     });
     if (error) throw error;
     return (data as DailyVisit[]) ?? [];
-  } catch {
+  } catch (error) {
+    console.error("Failed to get visitor history:", error);
     return getMockHistory();
   }
 }

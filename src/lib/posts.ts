@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getE2EPostBySlug, isE2EMockDbEnabled } from "@/lib/e2e/mock-store";
 import type { Post } from "@/types";
 
-export async function getPosts(tag?: string): Promise<Post[]> {
+export async function getPosts(tag?: string, q?: string): Promise<Post[]> {
   const supabase = await createClient();
 
   let query = supabase
@@ -13,6 +13,12 @@ export async function getPosts(tag?: string): Promise<Post[]> {
 
   if (tag && tag !== "트렌딩" && tag !== "최신") {
     query = query.eq("tag", tag);
+  }
+
+  if (q) {
+    const escapedLike = q.replace(/\\/g, "\\\\").replace(/[%_]/g, (c) => `\\${c}`);
+    const pattern = `%${escapedLike}%`.replace(/"/g, '\\"');
+    query = query.or(`title.ilike."${pattern}",excerpt.ilike."${pattern}"`);
   }
 
   const { data, error } = await query;
@@ -78,7 +84,9 @@ export async function getTrendingPosts(): Promise<Post[]> {
 }
 
 export async function likePost(postId: string): Promise<void> {
-  const supabase = createClient();
-  // Use rpc to atomically increment
-  await (await supabase).rpc("increment_likes", { post_id: postId });
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("increment_likes", {
+    post_id: postId,
+  });
+  if (error) throw error;
 }

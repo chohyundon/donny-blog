@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { mapGithubUser } from "@/lib/github-user";
 
 export type CommentActionResult =
   | { ok: true }
@@ -31,23 +32,15 @@ export async function createComment(
       return { ok: false, error: "GitHub 로그인이 필요합니다." };
     }
 
-    const meta = user.user_metadata ?? {};
-    const github =
-      (meta.user_name as string | undefined) ??
-      (meta.preferred_username as string | undefined) ??
-      null;
+    const author = mapGithubUser(user);
 
     const { error } = await supabase.from("comments").insert({
       post_slug: postSlug,
       user_id: user.id,
       content: trimmed,
-      author_name:
-        (meta.full_name as string | undefined) ??
-        (meta.name as string | undefined) ??
-        github ??
-        "GitHub User",
-      author_avatar: (meta.avatar_url as string | undefined) ?? null,
-      author_github: github,
+      author_name: author.name,
+      author_avatar: author.avatarUrl,
+      author_github: author.github,
     });
 
     if (error) throw error;

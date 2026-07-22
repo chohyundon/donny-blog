@@ -84,7 +84,8 @@ export default function VisitorChart({ data, todayStr }: VisitorChartProps) {
                 y={H + 18}
                 textAnchor="middle"
                 fontSize="10"
-                fill={isToday ? "#a5b4fc" : "rgba(255,255,255,0.22)"}
+                fill={isToday ? "#a5b4fc" : undefined}
+                className={isToday ? undefined : "fill-foreground/25"}
                 fontWeight={isToday ? "600" : "400"}
               >
                 {dayLabel(p.date)}

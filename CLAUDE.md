@@ -28,10 +28,10 @@ src/
   middleware.ts            — 전체 요청에서 Supabase 세션 갱신 (lib/supabase/middleware.ts 위임)
   app/
     layout.tsx              — Navbar + Footer 공통 레이아웃
-    page.tsx                — 홈 (HeroSection + TabBar + PostCard 그리드, 목 데이터 사용)
+    page.tsx                — 홈 (HeroSection + TabBar + PostCard 그리드)
     blog/
-      page.tsx               — 블로그 목록 (tag/tab searchParams 필터링, 목 데이터 사용)
-      [slug]/page.tsx         — 포스트 상세 (실 데이터 우선, 없으면 목 데이터 폴백)
+      page.tsx               — 블로그 목록 (tag/tab searchParams 필터링)
+      [slug]/page.tsx         — 포스트 상세
     write/page.tsx           — 글쓰기 (requireAuthor() 게이트, WriteForm)
     auth/
       callback/route.ts      — Supabase OAuth 콜백 핸들러
@@ -45,7 +45,6 @@ src/
     write/WriteForm.tsx      — 글쓰기 폼 (이미지 업로드 포함)
   lib/
     posts.ts                — Supabase 쿼리 함수 (getPosts, getPostBySlug, getTrendingPosts 등)
-    mock-posts.ts           — 홈/블로그 목록에서 아직 쓰는 목 데이터 (아래 "목 데이터 전환 현황" 참고)
     comments.ts              — 댓글 조회 + 현재 유저 조회
     stats.ts                — 방문자 수 증가+조회 (increment_visitor_count / get_visitor_history RPC)
     actions/                — Server Action (comments.ts, posts.ts, upload.ts)
@@ -59,12 +58,6 @@ src/
       middleware.ts            — 미들웨어용 세션 갱신 로직
   types/index.ts            — Post, Tag 인터페이스 (Supabase 스키마와 1:1 대응)
 ```
-
-### 목 데이터 전환 현황
-
-- `posts.ts`의 실제 Supabase 쿼리, `supabase-schema.sql`의 테이블/RLS/RPC는 이미 배포되어 있고 상세 페이지(`blog/[slug]`)·좋아요·댓글·방문자수는 실 데이터로 동작한다.
-- 다만 홈(`app/page.tsx`)과 블로그 목록(`app/blog/page.tsx`)은 아직 `mock-posts.ts`의 `MOCK_POSTS`를 그대로 쓴다 — 이 두 곳만 `getPosts()` 계열로 교체하면 전환이 끝난다.
-- 전환 후 `mock-posts.ts`는 삭제하거나 `__mocks__/` 등 테스트 전용 디렉터리로 이동한다.
 
 ### 기술 스택
 
