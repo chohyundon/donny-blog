@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, type FormEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Search, PenLine, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "@/lib/actions/comments";
 import { AUTHOR_EMAIL } from "@/lib/auth/constants";
+import { mapGithubUser } from "@/lib/github-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,29 +29,14 @@ function mapUser(user: {
   email?: string | null;
   user_metadata?: Record<string, unknown>;
 }): NavUser {
-  const meta = user.user_metadata ?? {};
-  const github =
-    (meta.user_name as string | undefined) ??
-    (meta.preferred_username as string | undefined) ??
-    null;
-
-  return {
-    id: user.id,
-    email: user.email ?? null,
-    name:
-      (meta.full_name as string | undefined) ??
-      (meta.name as string | undefined) ??
-      github ??
-      "GitHub User",
-    avatarUrl: (meta.avatar_url as string | undefined) ?? null,
-    github,
-  };
+  return { ...mapGithubUser(user), email: user.email ?? null };
 }
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState<NavUser | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -85,6 +71,15 @@ export default function Navbar() {
     });
   };
 
+  const handleSearchSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+    router.push(`/blog?q=${encodeURIComponent(trimmed)}`);
+    setSearchQuery("");
+    setSearchOpen(false);
+  };
+
   const handleSignOut = () => {
     startTransition(async () => {
       await signOut();
@@ -103,12 +98,16 @@ export default function Navbar() {
         </Link>
 
         {searchOpen ? (
-          <div className="mx-8 flex flex-1 items-center gap-3 rounded-xl border border-border bg-surface-subtle px-4 py-2">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="mx-8 flex flex-1 items-center gap-3 rounded-xl border border-border bg-surface-subtle px-4 py-2">
             <Search size={15} className="shrink-0 text-foreground/40" />
             <Input
               autoFocus
               aria-label="포스트 검색"
               placeholder="포스트 검색..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="h-auto flex-1 border-0 bg-transparent p-0 text-sm text-foreground shadow-none placeholder:text-muted-foreground focus-visible:ring-0"
             />
             <Button
@@ -116,11 +115,14 @@ export default function Navbar() {
               aria-label="검색 닫기"
               variant="ghost"
               size="icon-sm"
-              onClick={() => setSearchOpen(false)}
+              onClick={() => {
+                setSearchOpen(false);
+                setSearchQuery("");
+              }}
               className="text-foreground/40 hover:bg-transparent hover:text-foreground">
               <X size={15} />
             </Button>
-          </div>
+          </form>
         ) : (
           <ul className="hidden items-center gap-8 md:flex">
             {NAV_ITEMS.map((item) => (

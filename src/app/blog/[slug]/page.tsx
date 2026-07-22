@@ -67,10 +67,7 @@ export default async function PostPage({ params }: PostPageProps) {
     locale: ko,
   });
 
-  const hasMarkdownBody =
-    !!post.content &&
-    post.content.trim().length > 0 &&
-    !post.content.trim().endsWith("...");
+  const hasMarkdownBody = !!post.content && post.content.trim().length > 0;
 
   const { content: markdownContent, headings } = hasMarkdownBody
     ? await renderMarkdown(post.content)

@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getE2EPostBySlug, isE2EMockDbEnabled } from "@/lib/e2e/mock-store";
 import type { Post } from "@/types";
 
-export async function getPosts(tag?: string): Promise<Post[]> {
+export async function getPosts(tag?: string, q?: string): Promise<Post[]> {
   const supabase = await createClient();
 
   let query = supabase
@@ -13,6 +13,11 @@ export async function getPosts(tag?: string): Promise<Post[]> {
 
   if (tag && tag !== "트렌딩" && tag !== "최신") {
     query = query.eq("tag", tag);
+  }
+
+  if (q) {
+    const escaped = q.replace(/[%_]/g, (c) => `\\${c}`);
+    query = query.or(`title.ilike.%${escaped}%,excerpt.ilike.%${escaped}%`);
   }
 
   const { data, error } = await query;

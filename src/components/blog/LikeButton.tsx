@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useSyncExternalStore, useTransition } from "react";
 import { Heart } from "lucide-react";
 import { likePostAction } from "@/lib/actions/posts";
 import { buttonVariants } from "@/components/ui/button";
@@ -12,19 +12,49 @@ interface LikeButtonProps {
   initialLikes: number;
 }
 
+const LIKED_POSTS_KEY = "liked-posts";
+
+function getLikedSlugs(): string[] {
+  try {
+    const raw = localStorage.getItem(LIKED_POSTS_KEY);
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function subscribeNoop() {
+  return () => {};
+}
+
+function getServerLiked() {
+  return false;
+}
+
 export default function LikeButton({
   postId,
   slug,
   initialLikes,
 }: LikeButtonProps) {
   const [likes, setLikes] = useState(initialLikes);
-  const [liked, setLiked] = useState(false);
+  const [justLiked, setJustLiked] = useState(false);
   const [, startTransition] = useTransition();
+
+  const alreadyLiked = useSyncExternalStore(
+    subscribeNoop,
+    () => getLikedSlugs().includes(slug),
+    getServerLiked,
+  );
+  const liked = alreadyLiked || justLiked;
 
   const handleClick = () => {
     if (liked) return;
-    setLiked(true);
+    setJustLiked(true);
     setLikes((n) => n + 1);
+    localStorage.setItem(
+      LIKED_POSTS_KEY,
+      JSON.stringify([...getLikedSlugs(), slug]),
+    );
     startTransition(async () => {
       await likePostAction(postId, slug);
     });
