@@ -12,6 +12,9 @@ interface LikeButtonProps {
   initialLikes: number;
 }
 
+// localStorage 기반 브라우저 단위 중복 방지 — 로그인/서버 검증이 없어
+// localStorage 초기화, 다른 브라우저/시크릿 모드에서는 다시 좋아요를 누를 수 있다.
+// 개인 블로그 규모라 서버 측 dedup(로그인 요구 + likes 테이블)까지는 의도적으로 만들지 않음.
 const LIKED_POSTS_KEY = "liked-posts";
 
 function getLikedSlugs(): string[] {
