@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PostPageProps) {
       title,
       description: post.excerpt,
       type: "article",
-      publishedTime: post.published_at,
+      publishedTime: post.published_at!,
       images: post.thumbnail_url ? [post.thumbnail_url] : undefined,
     },
     twitter: {
@@ -74,8 +74,8 @@ export default async function PostPage({ params }: PostPageProps) {
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.published_at,
-    dateModified: post.published_at,
+    datePublished: post.published_at!,
+    dateModified: post.published_at!,
     url: `${siteUrl}/blog/${slug}`,
     image: post.thumbnail_url ?? undefined,
     author: {

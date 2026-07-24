@@ -103,7 +103,7 @@ export async function createPost(
       thumbnail_url: post.thumbnail_url,
       read_time: post.read_time,
       published: post.published,
-      published_at: published ? now : null,
+      published_at: post.published_at,
     });
 
     if (error) {
@@ -166,6 +166,7 @@ export async function updatePost(
 
   const excerptValue = excerpt || content.slice(0, 140);
   const readTime = estimateReadTime(content);
+  const now = new Date().toISOString();
 
   if (isE2EMockDbEnabled()) {
     const existing = await getE2EPostBySlug(slug);
@@ -184,6 +185,7 @@ export async function updatePost(
       thumbnail_url: thumbnailUrl,
       read_time: readTime,
       published,
+      published_at: published ? (existing.published_at ?? now) : null,
     });
 
     revalidatePath("/");
@@ -194,6 +196,14 @@ export async function updatePost(
 
   try {
     const supabase = await createClient();
+    const { data: existingRow } = await supabase
+      .from("posts")
+      .select("published_at")
+      .eq("slug", slug)
+      .single();
+
+    const publishedAt = published ? (existingRow?.published_at ?? now) : null;
+
     const { error } = await supabase
       .from("posts")
       .update({
@@ -206,6 +216,7 @@ export async function updatePost(
         thumbnail_url: thumbnailUrl,
         read_time: readTime,
         published,
+        published_at: publishedAt,
       })
       .eq("slug", slug);
 

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { cookies } from "next/headers";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
@@ -5,7 +6,7 @@ import { AUTHOR_EMAIL, isAuthorEmail } from "@/lib/auth/constants";
 
 export { AUTHOR_EMAIL, isAuthorEmail };
 
-export async function getAuthUser() {
+export const getAuthUser = cache(async () => {
   try {
     const supabase = await createClient();
     const {
@@ -15,7 +16,7 @@ export async function getAuthUser() {
   } catch {
     return null;
   }
-}
+});
 
 function e2eAuthorUser(): User {
   return {

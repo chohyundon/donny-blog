@@ -37,6 +37,71 @@ function mapUser(user: {
   return { ...mapGithubUser(user), email: user.email ?? null };
 }
 
+function NavLinks({
+  className,
+  linkClassName,
+  onItemClick,
+}: {
+  className: string;
+  linkClassName: string;
+  onItemClick?: () => void;
+}) {
+  return (
+    <ul className={className}>
+      {NAV_ITEMS.map((item) => (
+        <li key={item.label}>
+          <Link href={item.href} onClick={onItemClick} className={linkClassName}>
+            {item.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function AuthButton({
+  user,
+  isPending,
+  onSignOut,
+  onGitHubLogin,
+  className,
+}: {
+  user: NavUser | null;
+  isPending: boolean;
+  onSignOut: () => void;
+  onGitHubLogin: () => void;
+  className: string;
+}) {
+  if (user) {
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        onClick={onSignOut}
+        disabled={isPending}
+        className={className}>
+        {user.avatarUrl ? (
+          <Avatar size="sm" className="size-5">
+            <AvatarImage src={user.avatarUrl} alt={user.name} />
+            <AvatarFallback>{user.name.slice(0, 1)}</AvatarFallback>
+          </Avatar>
+        ) : null}
+        로그아웃
+      </Button>
+    );
+  }
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      onClick={onGitHubLogin}
+      className={className}>
+      GitHub 로그인
+    </Button>
+  );
+}
+
 interface NavbarProps {
   initialUser: User | null;
 }
@@ -131,17 +196,10 @@ export default function Navbar({ initialUser }: NavbarProps) {
             </Button>
           </form>
         ) : (
-          <ul className="hidden items-center gap-8 md:flex">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="text-sm text-foreground/50 transition-colors hover:text-foreground">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <NavLinks
+            className="hidden items-center gap-8 md:flex"
+            linkClassName="text-sm text-foreground/50 transition-colors hover:text-foreground"
+          />
         )}
 
         <div className="flex shrink-0 items-center gap-2">
@@ -180,52 +238,30 @@ export default function Navbar({ initialUser }: NavbarProps) {
                   </DrawerClose>
                 </div>
 
-                <ul className="flex flex-col p-2">
-                  {NAV_ITEMS.map((item) => (
-                    <li key={item.label}>
-                      <Link
-                        href={item.href}
-                        onClick={() => setNavOpen(false)}
-                        className="block rounded-lg px-3 py-2.5 text-sm text-foreground/70 hover:bg-surface-hover hover:text-foreground">
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <NavLinks
+                  className="flex flex-col p-2"
+                  linkClassName="block rounded-lg px-3 py-2.5 text-sm text-foreground/70 hover:bg-surface-hover hover:text-foreground"
+                  onItemClick={() => setNavOpen(false)}
+                />
 
                 <div className="mt-auto border-t border-border p-4">
-                  {user ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        handleSignOut();
-                        setNavOpen(false);
-                      }}
-                      disabled={isPending}
-                      className="flex w-full items-center gap-2 border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground">
-                      {user.avatarUrl ? (
-                        <Avatar size="sm" className="size-5">
-                          <AvatarImage src={user.avatarUrl} alt={user.name} />
-                          <AvatarFallback>
-                            {user.name.slice(0, 1)}
-                          </AvatarFallback>
-                        </Avatar>
-                      ) : null}
-                      로그아웃
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        handleGitHubLogin();
-                        setNavOpen(false);
-                      }}
-                      className="w-full border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground">
-                      GitHub 로그인
-                    </Button>
-                  )}
+                  <AuthButton
+                    user={user}
+                    isPending={isPending}
+                    onSignOut={() => {
+                      handleSignOut();
+                      setNavOpen(false);
+                    }}
+                    onGitHubLogin={() => {
+                      handleGitHubLogin();
+                      setNavOpen(false);
+                    }}
+                    className={
+                      user
+                        ? "flex w-full items-center gap-2 border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground"
+                        : "w-full border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground"
+                    }
+                  />
                 </div>
               </DrawerPopup>
             </DrawerPortal>
@@ -243,30 +279,17 @@ export default function Navbar({ initialUser }: NavbarProps) {
             </Button>
           )}
 
-          {user ? (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleSignOut}
-              disabled={isPending}
-              className="hidden items-center gap-2 border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground md:flex">
-              {user.avatarUrl ? (
-                <Avatar size="sm" className="size-5">
-                  <AvatarImage src={user.avatarUrl} alt={user.name} />
-                  <AvatarFallback>{user.name.slice(0, 1)}</AvatarFallback>
-                </Avatar>
-              ) : null}
-              로그아웃
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleGitHubLogin}
-              className="hidden border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground md:flex">
-              GitHub 로그인
-            </Button>
-          )}
+          <AuthButton
+            user={user}
+            isPending={isPending}
+            onSignOut={handleSignOut}
+            onGitHubLogin={handleGitHubLogin}
+            className={
+              user
+                ? "hidden items-center gap-2 border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground md:flex"
+                : "hidden border-foreground/15 text-foreground/60 hover:bg-surface-hover hover:text-foreground md:flex"
+            }
+          />
 
           {isAuthor ? (
             <Link href="/write" className={buttonVariants({ size: "sm" })}>

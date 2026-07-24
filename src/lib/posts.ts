@@ -34,7 +34,9 @@ export async function getPosts(tag?: string, q?: string): Promise<Post[]> {
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   if (isE2EMockDbEnabled()) {
     const e2ePost = await getE2EPostBySlug(slug);
-    if (e2ePost) return e2ePost;
+    if (e2ePost) {
+      return e2ePost.published ? e2ePost : null;
+    }
   }
 
   const supabase = await createClient();
