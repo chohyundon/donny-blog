@@ -20,11 +20,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const { tab } = await searchParams;
   const activeTab = tab ?? "트렌딩";
 
-  const user = await getAuthUser();
-
   const [posts, visitorCount, visitorHistory] = await Promise.all([
     activeTab === "트렌딩" ? getTrendingPosts() : getPosts(activeTab),
-    getAndIncrementVisitorCount(user?.email),
+    getAuthUser().then((user) => getAndIncrementVisitorCount(user?.email)),
     getVisitorHistory(7),
   ]);
 
