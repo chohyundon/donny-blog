@@ -8,6 +8,7 @@ import ThemedToastContainer from "@/components/providers/ThemedToastContainer";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { getSiteUrl } from "@/lib/site";
+import { getAuthUser } from "@/lib/auth/author";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -28,11 +29,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialUser = await getAuthUser();
+
   return (
     <html
       lang="ko"
@@ -48,7 +51,7 @@ export default function RootLayout({
             className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black">
             본문으로 건너뛰기
           </a>
-          <Navbar />
+          <Navbar initialUser={initialUser} />
           <main id="main-content">{children}</main>
           <Footer />
           <ThemedToastContainer />

@@ -24,7 +24,7 @@ export async function GET() {
       <link>${link}</link>
       <guid>${link}</guid>
       <description>${escapeXml(post.excerpt)}</description>
-      <pubDate>${new Date(post.published_at).toUTCString()}</pubDate>
+      <pubDate>${new Date(post.published_at!).toUTCString()}</pubDate>
     </item>`;
     })
     .join("");

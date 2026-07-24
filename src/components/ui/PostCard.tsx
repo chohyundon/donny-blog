@@ -1,10 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, MessageCircle } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { formatTimeAgo } from "@/lib/utils";
 import type { Post } from "@/types";
 
 interface PostCardProps {
@@ -13,10 +12,7 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, priority }: PostCardProps) {
-  const timeAgo = formatDistanceToNow(new Date(post.published_at), {
-    addSuffix: true,
-    locale: ko,
-  });
+  const timeAgo = formatTimeAgo(post.published_at!);
 
   return (
     <article>

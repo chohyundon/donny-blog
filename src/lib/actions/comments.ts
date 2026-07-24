@@ -47,7 +47,8 @@ export async function createComment(
 
     revalidatePath(`/blog/${postSlug}`);
     return { ok: true };
-  } catch {
+  } catch (error) {
+    console.error("Failed to create comment:", error);
     return {
       ok: false,
       error: "댓글을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.",
@@ -79,7 +80,8 @@ export async function deleteComment(
 
     revalidatePath(`/blog/${postSlug}`);
     return { ok: true };
-  } catch {
+  } catch (error) {
+    console.error("Failed to delete comment:", error);
     return { ok: false, error: "댓글을 삭제하지 못했어요." };
   }
 }

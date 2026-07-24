@@ -8,7 +8,7 @@ export interface Post {
   thumbnail_accent: string
   thumbnail_url: string | null
   tag: string
-  published_at: string
+  published_at: string | null
   likes: number
   comments_count: number
   read_time: number

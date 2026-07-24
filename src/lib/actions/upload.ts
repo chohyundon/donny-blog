@@ -62,7 +62,8 @@ export async function uploadPostImage(
     } = supabase.storage.from("post-images").getPublicUrl(path);
 
     return { ok: true, url: publicUrl };
-  } catch {
+  } catch (error) {
+    console.error("Failed to upload post image:", error);
     return {
       ok: false,
       error:

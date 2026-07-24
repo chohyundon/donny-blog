@@ -2,14 +2,10 @@ import Link from "next/link";
 import { GitFork, X, Rss } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BLOG_NAV_ITEMS } from "@/lib/nav";
 
 const LINKS = {
-  blog: [
-    { label: "Featured", href: "/blog?tab=trending" },
-    { label: "React", href: "/blog?tag=React" },
-    { label: "TypeScript", href: "/blog?tag=TypeScript" },
-    { label: "Next.js", href: "/blog?tag=Next.js" },
-  ],
+  blog: BLOG_NAV_ITEMS,
   me: [
     { label: "About", href: "/about" },
     { label: "Projects", href: "/projects" },

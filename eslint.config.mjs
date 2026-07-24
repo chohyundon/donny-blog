@@ -15,8 +15,10 @@ const eslintConfig = defineConfig([
     // Playwright test artifacts (gitignored, but present locally after test runs)
     "playwright-report/**",
     "test-results/**",
-    // Cloudflare Workers 배포용 OpenNext 빌드 산출물
-    ".open-next/**",
+    // Cloudflare Workers 배포용 OpenNext 빌드 산출물 (중첩 worktree 포함 모든 깊이 매칭)
+    "**/.open-next/**",
+    // 다른 git worktree 산출물
+    ".claude/worktrees/**",
   ]),
 ]);
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AUTHOR_EMAIL } from "@/lib/auth/author";
+import { AUTHOR_EMAIL } from "@/lib/auth/constants";
 
 interface AuthorOnlyNoticeProps {
   mode: "create" | "edit";

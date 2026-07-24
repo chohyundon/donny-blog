@@ -11,6 +11,7 @@ import {
   saveE2EPost,
 } from "@/lib/e2e/mock-store";
 import { likePost } from "@/lib/posts";
+import { slugify } from "@/lib/utils";
 import type { Post } from "@/types";
 
 export type CreatePostResult =
@@ -22,16 +23,6 @@ export type UpdatePostResult =
   | { ok: false; error: string };
 
 export type DeletePostResult = { ok: true } | { ok: false; error: string };
-
-function slugify(input: string): string {
-  return input
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9가-힣\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 function estimateReadTime(content: string): number {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
@@ -85,7 +76,7 @@ export async function createPost(
     thumbnail_url: thumbnailUrl,
     read_time: estimateReadTime(content),
     published,
-    published_at: published ? now : now,
+    published_at: published ? now : null,
     likes: 0,
     comments_count: 0,
     created_at: now,
@@ -127,7 +118,8 @@ export async function createPost(
     revalidatePath(`/blog/${slug}`);
 
     return { ok: true, slug };
-  } catch {
+  } catch (error) {
+    console.error("Failed to create post:", error);
     return {
       ok: false,
       error: "글을 저장하지 못했어요. DB 권한/테이블을 확인해 주세요.",
@@ -224,7 +216,8 @@ export async function updatePost(
     revalidatePath(`/blog/${slug}`);
 
     return { ok: true, slug };
-  } catch {
+  } catch (error) {
+    console.error("Failed to update post:", error);
     return {
       ok: false,
       error: "글을 수정하지 못했어요. DB 권한을 확인해 주세요.",
@@ -253,7 +246,8 @@ export async function deletePost(slug: string): Promise<DeletePostResult> {
     revalidatePath("/");
     revalidatePath("/blog");
     return { ok: true };
-  } catch {
+  } catch (error) {
+    console.error("Failed to delete post:", error);
     return {
       ok: false,
       error: "글을 삭제하지 못했어요. DB 권한을 확인해 주세요.",

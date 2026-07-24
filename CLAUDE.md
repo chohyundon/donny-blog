@@ -90,6 +90,7 @@ pnpm test:e2e:ui  # Playwright UI 모드
 - **컴포넌트 네이밍** : PascalCase로 유지
 - **import** : 루트의 레이아웃 제외하고 나머지는 모두 절대경로로 유지
 - **에러/로딩 처리** : 데이터를 불러오는 라우트에는 `loading.tsx`를 두고, slug가 존재하지 않는 경우 `notFound()`를 호출해 `not-found.tsx`로 처리한다. 예기치 않은 에러는 `error.tsx`에서 사용자 친화적으로 표시한다.
+  - 단, Next.js App Router에서는 `loading.tsx`(Suspense 경계)가 있으면 `notFound()`를 호출해도 이미 200으로 스트리밍이 시작된 뒤라 실제 HTTP 상태 코드가 200으로 고정되는 문제가 있다. 이 때문에 루트(`/`), `/blog`, `/blog/[slug]`에는 현재 의도적으로 `loading.tsx`를 두지 않았다(커밋 `6a9e8cb`). 이 Next.js 동작이 해결되기 전까지는 이 세 라우트에 `loading.tsx`를 다시 추가하지 말 것.
 - **이미지 최적화** : 모든 콘텐츠/썸네일 이미지는 `next/image`를 사용한다. 외부 이미지 도메인은 `next.config.ts`의 `images.remotePatterns`에 명시적으로 등록한 것만 허용한다.
 - **SEO / 메타데이터** : 포스트 상세 페이지는 `generateMetadata`로 title/description/OG 이미지를 채운다. 정적 페이지(`/`, `/blog`)도 기본 메타데이터를 갖춘다. `sitemap.ts`, `robots.ts`로 크롤링 설정을 관리한다.
 

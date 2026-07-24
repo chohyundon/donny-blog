@@ -2,15 +2,13 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, MessageCircle, Clock } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
 import CommentSection from "@/components/comments/CommentSection";
 import LikeButton from "@/components/blog/LikeButton";
 import TableOfContents from "@/components/blog/TableOfContents";
 import PostActions from "@/components/blog/PostActions";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, formatTimeAgo } from "@/lib/utils";
 import { getAuthContext } from "@/lib/auth/author";
 import { getCommentsBySlug, mapUserToCommentAuthor } from "@/lib/comments";
 import { renderMarkdown } from "@/lib/markdown/render";
@@ -62,10 +60,7 @@ export default async function PostPage({ params }: PostPageProps) {
   ]);
   const commentAuthor = user ? mapUserToCommentAuthor(user) : null;
 
-  const timeAgo = formatDistanceToNow(new Date(post.published_at), {
-    addSuffix: true,
-    locale: ko,
-  });
+  const timeAgo = formatTimeAgo(post.published_at!);
 
   const hasMarkdownBody = !!post.content && post.content.trim().length > 0;
 

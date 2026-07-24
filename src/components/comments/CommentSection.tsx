@@ -2,14 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
 import { createClient } from "@/lib/supabase/client";
 import { createComment, deleteComment, signOut } from "@/lib/actions/comments";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { formatTimeAgo } from "@/lib/utils";
 import type { Comment, CommentAuthor } from "@/types";
 
 interface CommentSectionProps {
@@ -186,10 +185,7 @@ export default function CommentSection({
           </li>
         ) : (
           initialComments.map((comment) => {
-            const timeAgo = formatDistanceToNow(new Date(comment.created_at), {
-              addSuffix: true,
-              locale: ko,
-            });
+            const timeAgo = formatTimeAgo(comment.created_at);
             const isOwner = user?.id === comment.user_id;
 
             return (

@@ -18,7 +18,8 @@ export async function getCommentsBySlug(postSlug: string): Promise<Comment[]> {
 
     if (error) throw error;
     return (data as Comment[]) ?? [];
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch comments:", error);
     return [];
   }
 }

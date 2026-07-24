@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { POST_TAGS as TAGS } from "@/lib/tags";
+import { slugify as toSlug } from "@/lib/utils";
 
 const COLORS = [
   { color: "#1DC4D0", accent: "#0D9AA8" },
@@ -31,16 +32,6 @@ const COLORS = [
   { color: "#3879FA", accent: "#1B5CE0" },
   { color: "#6366f1", accent: "#4f46e5" },
 ];
-
-function toSlug(value: string) {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9가-힣\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 interface WriteFormProps {
   initialError?: string;
